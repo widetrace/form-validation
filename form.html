@@ -1,108 +1,138 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
     <script src="./bootstrap-formhelpers-phone.js"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <script src="./formClasses.js"></script>
 </head>
+
 <body>
     <div class="container mt-5">
         <ul class="nav nav-pills nav-justified" id="pills-tab" role="tablist">
             <li class="nav-item ">
-                <a class="nav-link active" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="true">Контактные данные</a>
+                <a class="nav-link active" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+                    aria-controls="pills-contact" aria-selected="true">Контактные данные</a>
             </li>
 
             <li class="nav-item ml-3">
-                <a class="nav-link disabled" id="pills-allInfo-tab" data-toggle="pill" href="#pills-allInfo" role="tab" aria-controls="pills-allInfo" aria-selected="true">Общие данные о процессе</a>
+                <a class="nav-link disabled" id="pills-allInfo-tab" data-toggle="pill" href="#pills-allInfo" role="tab"
+                    aria-controls="pills-allInfo" aria-selected="true">Общие данные о процессе</a>
             </li>
 
             <li class="nav-item ml-3">
-                <a class="nav-link disabled" id="pills-processSet-tab" data-toggle="pill" href="#pills-processSet" role="tab" aria-controls="pills-processSet" aria-selected="true">Характеристика процесса</a>
+                <a class="nav-link disabled" id="pills-processSet-tab" data-toggle="pill" href="#pills-processSet"
+                    role="tab" aria-controls="pills-processSet" aria-selected="true">Характеристика процесса</a>
             </li>
 
             <li class="nav-item ml-3">
-                <a class="nav-link disabled" id="pills-countEntrProcess-tab" data-toggle="pill" href="#pills-countEntrProcess" role="tab" aria-controls="pills-countEntrProcess" aria-selected="true">Количественные показатели процесса</a>
+                <a class="nav-link disabled" id="pills-countEntrProcess-tab" data-toggle="pill"
+                    href="#pills-countEntrProcess" role="tab" aria-controls="pills-countEntrProcess"
+                    aria-selected="true">Количественные показатели процесса</a>
             </li>
 
             <li class="nav-item ml-3">
-                <a class="nav-link disabled" id="pills-dataInProcess-tab" data-toggle="pill" href="#pills-dataInProcess" role="tab" aria-controls="pills-dataInProcess" aria-selected="true">Данные используемые в процессе</a>
+                <a class="nav-link disabled" id="pills-dataInProcess-tab" data-toggle="pill" href="#pills-dataInProcess"
+                    role="tab" aria-controls="pills-dataInProcess" aria-selected="true">Данные используемые в
+                    процессе</a>
             </li>
 
             <li class="nav-item ml-3">
-                <a class="nav-link disabled" id="pills-usedSystems-tab" data-toggle="pill" href="#pills-usedSystems" role="tab" aria-controls="pills-usedSystems" aria-selected="true">Системы, используемые в бизнес-процессе</a>
+                <a class="nav-link disabled" id="pills-usedSystems-tab" data-toggle="pill" href="#pills-usedSystems"
+                    role="tab" aria-controls="pills-usedSystems" aria-selected="true">Системы, используемые в
+                    бизнес-процессе</a>
             </li>
 
             <li class="nav-item ml-3">
-                <a class="nav-link disabled" id="pills-extraInfo-tab" data-toggle="pill" href="#pills-extraInfo" role="tab" aria-controls="pills-extraInfo" aria-selected="true">Дополнительная информация</a>
+                <a class="nav-link disabled" id="pills-extraInfo-tab" data-toggle="pill" href="#pills-extraInfo"
+                    role="tab" aria-controls="pills-extraInfo" aria-selected="true">Дополнительная информация</a>
             </li>
 
         </ul>
-        
+
         <form class="mt-5" name="mainForm">
             <div class="tab-content" id="pills-tabContent">
-        
-                <div class="tab-pane fade show active" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+
+                <div class="tab-pane fade show active" id="pills-contact" role="tabpanel"
+                    aria-labelledby="pills-contact-tab">
                     <h3 class="display-4">Контактные данные</h3>
                     <div class="form-group">
-                        <small id="phoneOrEmailInvalid" class="form-text text-danger" style="display: none">Введите номер телефона или ваш email</small>
+                        <small id="phoneOrEmailInvalid" class="form-text text-danger" style="display: none">Введите
+                            номер телефона или ваш email</small>
 
                         <label for="customerName" class="mt-3">ФИО</label>
                         <input class="form-control" type="text" id="customerName" placeholder="Ivanov Ivan Ivanovich">
                         <small id="customerNameHelp" class="form-text text-muted">Как к вам обращаться</small>
-                        <small id="customerNameInvalid" class="form-text text-danger" style="display: none">Это обязательное поле</small>
+                        <small id="customerNameInvalid" class="form-text text-danger" style="display: none">Это
+                            обязательное поле</small>
 
                         <label for="customerEmail" class="mt-3">Email</label>
                         <input class="form-control" type="text" id="customerEmail" placeholder="youremail@yourmail.com">
                         <small id="customerEmailHelp" class="form-text text-muted">Почта для связи с вами</small>
-                        <small id="customerEmailInvalid" class="form-text text-danger" style="display: none">Неправильно введена почта</small>
+                        <small id="customerEmailInvalid" class="form-text text-danger" style="display: none">Неправильно
+                            введена почта</small>
 
                         <label for="customerPhone" class="mt-3">Номер телефона</label>
-                        <input class="form-control input-medium bfh-phone" type="text" id="customerPhone" data-format="+7 (ddd) ddd-dd-dd">
-                        <small id="customerPhoneHelp" class="form-text text-muted">Номер телефона, через который с вами можно связаться (пример: +7 888 888 88 88)</small>
-                        <small id="customerPhoneInvalid" class="form-text text-danger" style="display: none">Неправильно введен номер телефона</small>
+                        <input class="form-control input-medium bfh-phone" type="text" id="customerPhone"
+                            data-format="+7 (ddd) ddd-dd-dd">
+                        <small id="customerPhoneHelp" class="form-text text-muted">Номер телефона, через который с вами
+                            можно связаться (пример: +7 888 888 88 88)</small>
+                        <small id="customerPhoneInvalid" class="form-text text-danger" style="display: none">Неправильно
+                            введен номер телефона</small>
 
                         <label for="customerUnit" class="mt-3">Подразделение</label>
                         <input class="form-control" type="text" id="customerUnit" placeholder="МТС ИТ">
                         <small id="customerUnitHelp" class="form-text text-muted">Название вашего подразделения</small>
-                        <small id="customerUnitInvalid" class="form-text text-danger" style="display: none">Введите название подразделения</small>
+                        <small id="customerUnitInvalid" class="form-text text-danger" style="display: none">Введите
+                            название подразделения</small>
                     </div>
                     <button type="button" class="btn btn-info float-right " id="customerDataNext">Дальше >>></button>
-                </div>  
+                </div>
 
                 <div class="tab-pane fade" id="pills-allInfo" role="tabpanel" aria-labelledby="pills-allInfo-tab">
                     <h3 class="display-4">Общие данные о процессе</h3>
                     <div class="form-group">
-                        <small id="allInfoInvalid" class="form-text text-danger" style="display: none">Заполните все пункты</small>
+                        <small id="allInfoInvalid" class="form-text text-danger" style="display: none">Заполните все
+                            пункты</small>
 
                         <label for="processName" class="mt-3">Наименование процесса</label>
                         <input class="form-control" type="text" id="processName">
-                        <small id="processHelp" class="form-text text-muted">Краткое наименование, отражающее предмет и состав операций</small>
-                        <small id="processNameInvalid" class="form-text text-danger" style="display: none">Обязательно для ввода</small>
+                        <small id="processHelp" class="form-text text-muted">Краткое наименование, отражающее предмет и
+                            состав операций</small>
+                        <small id="processNameInvalid" class="form-text text-danger" style="display: none">Обязательно
+                            для ввода</small>
 
                         <label for="shortAsIsExample" class="mt-3">Краткое описание процесса AS IS</label>
                         <textarea class="form-control" id="shortAsIsExample" rows="4"></textarea>
-                        <small id="shortAsIsExampleHelp" class="form-text text-muted">Основные операции процесса, выполняемые сотрудниками, с указанием программ и систем</small>
-                        <small id="shortAsIsExampleInvalid" class="form-text text-danger" style="display: none">Обязательно для ввода</small>
+                        <small id="shortAsIsExampleHelp" class="form-text text-muted">Основные операции процесса,
+                            выполняемые сотрудниками, с указанием программ и систем</small>
+                        <small id="shortAsIsExampleInvalid" class="form-text text-danger"
+                            style="display: none">Обязательно для ввода</small>
 
                         <label for="shortToBeExample" class="mt-3">Краткое описание процесса TO BE</label>
                         <textarea class="form-control" id="shortToBeExample" rows="4"></textarea>
                         <small id="shortToBeExampleHelp" class="form-text text-muted">
                             1) Основные операции процесса, выполняемые роботом
                             <br />
-                            2) Изменения в процессе по сравнению с AS IS (если запланированы)                            
+                            2) Изменения в процессе по сравнению с AS IS (если запланированы)
                         </small>
-                        <small id="shortToBeExampleInvalid" class="form-text text-danger" style="display: none">Обязательно для ввода</small>
+                        <small id="shortToBeExampleInvalid" class="form-text text-danger"
+                            style="display: none">Обязательно для ввода</small>
                     </div>
                     <button type="button" class="btn btn-info float-right " id="processInfoNext">Дальше >>></button>
                 </div>
@@ -112,11 +142,13 @@
                     <div class="form-group mt-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="rulesCheck1">
-                            <label class="form-check-label" for="rulesCheck1">Операции процесса можно представить в виде алгоритма</label>
+                            <label class="form-check-label" for="rulesCheck1">Операции процесса можно представить в виде
+                                алгоритма</label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="rulesCheck2">
-                            <label class="form-check-label" for="rulesCheck2">В точках ветвления процесса решение принимается по установленным правилам</label>
+                            <label class="form-check-label" for="rulesCheck2">В точках ветвления процесса решение
+                                принимается по установленным правилам</label>
                         </div>
                     </div>
                     <div class="form-group">
@@ -127,13 +159,17 @@
                             </div>
                             <input type="text" class="form-control" id="percentageOfBusExt">
                         </div>
-                        <small id="percentageOfBusExcHelp" class="form-text text-muted">Ориентировочный процент операций, где наступают события, которые переводят процесс к сотруднику для принятия решения</small>
-                        <small id="percentageOfBusExtInvalid" class="form-text text-danger" style="display: none">Введите значение</small>
+                        <small id="percentageOfBusExcHelp" class="form-text text-muted">Ориентировочный процент
+                            операций, где наступают события, которые переводят процесс к сотруднику для принятия
+                            решения</small>
+                        <small id="percentageOfBusExtInvalid" class="form-text text-danger"
+                            style="display: none">Введите значение</small>
                     </div>
                     <div class="form-group ">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="rulesCheck3">
-                            <label class="form-check-label" for="rulesCheck3">Процесс регламентирован и выполняется в соответствии с установленными требованиями</label>
+                            <label class="form-check-label" for="rulesCheck3">Процесс регламентирован и выполняется в
+                                соответствии с установленными требованиями</label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="rulesCheck4">
@@ -141,11 +177,13 @@
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="rulesCheck5">
-                            <label class="form-check-label" for="rulesCheck5">Процесс хорошо изучен и понятен владельцу и исполнителям</label>
+                            <label class="form-check-label" for="rulesCheck5">Процесс хорошо изучен и понятен владельцу
+                                и исполнителям</label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="rulesCheck6">
-                            <label class="form-check-label" for="rulesCheck6">Ручные операции в программах и системах</label>
+                            <label class="form-check-label" for="rulesCheck6">Ручные операции в программах и
+                                системах</label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="rulesCheck7">
@@ -155,14 +193,17 @@
                     <button type="button" class="btn btn-info float-right " id="processSetNext">Дальше >>></button>
                 </div>
 
-                <div class="tab-pane fade" id="pills-countEntrProcess" role="tabpanel" aria-labelledby="pills-countEntrProcess-tab">
+                <div class="tab-pane fade" id="pills-countEntrProcess" role="tabpanel"
+                    aria-labelledby="pills-countEntrProcess-tab">
                     <h3 class="display-4">Количественные показатели процесса (достаточно 1 из 2)</h3>
                     <div class="form-group border border-top-0 border-left-0 border-right-0 pb-3 border-dark">
-                        <small id="countrEtrProcessInvalid" class="form-text text-danger" style="display: none">Нужно ввести хотя бы одно значение</small>
+                        <small id="countrEtrProcessInvalid" class="form-text text-danger" style="display: none">Нужно
+                            ввести хотя бы одно значение</small>
 
                         <label for="numberOfWorkers" class="mt-3">Количество сотрудников, занятых в процессе</label>
                         <input class="form-control" type="text" id="numberOfWorkers">
-                        <small id="numberOfWorkersHelp" class="form-text text-muted">В показателе FTE (полностью занятая штатная единица) или количество сотрудников и процент их занятости в процессе</small>
+                        <small id="numberOfWorkersHelp" class="form-text text-muted">В показателе FTE (полностью занятая
+                            штатная единица) или количество сотрудников и процент их занятости в процессе</small>
 
                         <label for="howHardIsIt" class="mt-3">Трудоемкость процесса</label>
                         <input class="form-control" type="text" id="howHardIsIt">
@@ -174,42 +215,54 @@
                             Частота выбирается за показательный период: день / неделя / месяц / год
                         </small>
                     </div>
-                    <button type="button" class="btn btn-info float-right " id="countEntrProcessNext">Дальше >>></button>
+                    <button type="button" class="btn btn-info float-right " id="countEntrProcessNext">Дальше
+                        >>></button>
                 </div>
 
-                <div class="tab-pane fade" id="pills-dataInProcess" role="tabpanel" aria-labelledby="pills-dataInProcess-tab">
+                <div class="tab-pane fade" id="pills-dataInProcess" role="tabpanel"
+                    aria-labelledby="pills-dataInProcess-tab">
                     <h3 class="display-4">Данные используемые в процессе</h3>
                     <div class="form-group mt-3 border border-top-0 border-left-0 border-right-0 pb-3 border-dark">
-                        <small id="dataInProcessInvalid" class="form-text text-danger" style="display: none">Нужно отметить данные вашего процесса</small>
+                        <small id="dataInProcessInvalid" class="form-text text-danger" style="display: none">Нужно
+                            отметить данные вашего процесса</small>
 
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="dataCheck1">
-                            <label class="form-check-label" for="dataCheck1">Стандартные данные (файл, содержащий шаблонную форму с постоянными идентифицируемыми полями; интерфейс системы)</label>
+                            <label class="form-check-label" for="dataCheck1">Стандартные данные (файл, содержащий
+                                шаблонную форму с постоянными идентифицируемыми полями; интерфейс системы)</label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="dataCheck2">
-                            <label class="form-check-label" for="dataCheck2">Нестандартные структурированные данные (файл XML; файл Excel, Word, PowerPoint; конвертируемый файл PDF; текст с возможностью определения сущностей)</label>
+                            <label class="form-check-label" for="dataCheck2">Нестандартные структурированные данные
+                                (файл XML; файл Excel, Word, PowerPoint; конвертируемый файл PDF; текст с возможностью
+                                определения сущностей)</label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="dataCheck3">
-                            <label class="form-check-label" for="dataCheck3">Нестандартные неструктурированные данные (графическое изображение; отсканированный неконвертируемый файл; произвольный текст)</label>
+                            <label class="form-check-label" for="dataCheck3">Нестандартные неструктурированные данные
+                                (графическое изображение; отсканированный неконвертируемый файл; произвольный
+                                текст)</label>
                         </div>
                         <div class="unStrPercent" style="display: none">
-                            <label for="unStrDataPercent" class="mt-3">Доля нестандартных неструктурированных данных</label>
+                            <label for="unStrDataPercent" class="mt-3">Доля нестандартных неструктурированных
+                                данных</label>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">%</div>
                                 </div>
                                 <input type="text" class="form-control" id="unStrDataPercent" placeholder="">
                             </div>
-                            <small id="unStrDataPercentHelp" class="form-text text-muted">Ориентировочный процент нестандартных неструктурированных данных в общем объеме обрабатываемых данных</small>
+                            <small id="unStrDataPercentHelp" class="form-text text-muted">Ориентировочный процент
+                                нестандартных неструктурированных данных в общем объеме обрабатываемых данных</small>
                         </div>
                     </div>
                     <button type="button" class="btn btn-info float-right " id="dataInProcessNext">Дальше >>></button>
                 </div>
 
-                <div class="tab-pane fade border border-top-0 border-left-0 border-right-0 pb-3 border-dark" id="pills-usedSystems" role="tabpanel" aria-labelledby="pills-usedSystems-tab">
-                    <small class="form-text text-danger" id="someNameMissed" style="display: none">Название одной из систем пропущено</small>
+                <div class="tab-pane fade"
+                    id="pills-usedSystems" role="tabpanel" aria-labelledby="pills-usedSystems-tab">
+                    <small class="form-text text-danger" id="someNameMissed" style="display: none">Название одной из
+                        систем пропущено</small>
                     <div class="form-group " id="systemsNames">
                         <div class="systemsNames-block">
                             <label for="systemName1">Наименование системы 1</label>
@@ -230,39 +283,46 @@
                         <div class="col-md-12 text-center">
                             <div class="btn-group btn-group-lg">
                                 <button type="button" class="btn btn-success" id="addSystem">+ Добавить систему</button>
-                                <button type="button" class="btn btn-danger" id="delSystem">- Удалить последнюю систему</button>
+                                <button type="button" class="btn btn-danger" id="delSystem">- Удалить последнюю
+                                    систему</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-12 text-center" id="systemsAddInfo">
-                        <button class="btn btn-info" id="addInfoForSystems" type="button">Заполнить данные по введенным системам</button>
+                        <button class="btn btn-info" id="addInfoForSystems" type="button">Заполнить данные по введенным
+                            системам</button>
                     </div>
 
                     <div id="systemsInfo" style="display: none">
                         <div class="form-group" id="systemsInfo-add">
-                            <small id="systemInfoInvalid" class="form-text text-danger" style="display: none">Отметьте все поля</small>
+                            <small id="systemInfoInvalid" class="form-text text-danger" style="display: none">Отметьте
+                                все поля</small>
 
                             <h1 id="systemInfo-name" class="display-4"></h1>
 
                             <label for="desktopNumber">Количество экранов</label>
                             <input type="text" class="form-control" id="desktopNumber">
-                            <small id="desktopNumberHelp" class="form-text text-muted">Ориентировочное количество рабочих экранов</small>
+                            <small id="desktopNumberHelp" class="form-text text-muted">Ориентировочное количество
+                                рабочих экранов</small>
 
                             <fieldset class="form-group mt-2">
                                 <div class="row">
-                                    <legend class="col-form-label col-sm-2 pt-0">Возможно ли взаимодействие через API?</legend>
+                                    <legend class="col-form-label col-sm-2 pt-0">Возможно ли взаимодействие через API?
+                                    </legend>
                                     <div class="col-sm-10">
                                         <div class="form-check mt-1">
-                                            <input class="form-check-input" type="radio" name="apiAvaible" id="apiAvaible1">
+                                            <input class="form-check-input radio-systemInfo" type="radio" name="apiAvaible"
+                                                id="apiAvaible1">
                                             <label class="form-check-label" for="apiAvaible1">
-                                            Да
+                                                Да
                                             </label>
                                         </div>
                                         <div class="form-check mt-3">
-                                            <input class="form-check-input" type="radio" name="apiAvaible" id="apiAvaible2">
+                                            <input class="form-check-input radio-systemInfo" type="radio" name="apiAvaible"
+                                                id="apiAvaible2">
                                             <label class="form-check-label" for="apiAvaible2">
-                                            Нет
+                                                Нет
                                             </label>
                                         </div>
                                     </div>
@@ -274,15 +334,17 @@
                                     <legend class="col-form-label col-sm-2 pt-0">Доступ к системе</legend>
                                     <div class="col-sm-10">
                                         <div class="form-check mt-1">
-                                            <input class="form-check-input" type="radio" name="systemEnter" id="systemEnter1">
+                                            <input class="form-check-input radio-systemInfo" type="radio" name="systemEnter"
+                                                id="systemEnter1">
                                             <label class="form-check-label" for="systemEnter1">
-                                            Прямой
+                                                Прямой
                                             </label>
                                         </div>
                                         <div class="form-check mt-3">
-                                            <input class="form-check-input" type="radio" name="systemEnter" id="systemEnter2">
+                                            <input class="form-check-input radio-systemInfo" type="radio" name="systemEnter"
+                                                id="systemEnter2">
                                             <label class="form-check-label" for="systemEnter2">
-                                            Удаленный через VDI / Citrix 
+                                                Удаленный через VDI / Citrix
                                             </label>
                                         </div>
                                     </div>
@@ -294,22 +356,25 @@
                                     <legend class="col-form-label col-sm-2 pt-0">Тестовая среда</legend>
                                     <div class="col-sm-10">
                                         <div class="form-check mt-1">
-                                            <input class="form-check-input" type="radio" name="testHabitat" id="testHabitat1">
+                                            <input class="form-check-input radio-systemInfo" type="radio" name="testHabitat"
+                                                id="testHabitat1">
                                             <label class="form-check-label" for="testHabitat1">
-                                            Доступна
+                                                Доступна
                                             </label>
                                         </div>
                                         <div class="form-check mt-3">
-                                            <input class="form-check-input" type="radio" name="testHabitat" id="testHabitat2">
+                                            <input class="form-check-input radio-systemInfo" type="radio" name="testHabitat"
+                                                id="testHabitat2">
                                             <label class="form-check-label" for="testHabitat2">
-                                            Не доступна
+                                                Не доступна
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </fieldset>
 
-                            <button class="btn btn-info" id="nextSystem" type="button"  style="display: none" >Добавить описание следующей задачи</button>
+                            <button class="btn btn-info" id="nextSystem" type="button" style="display: none">Добавить
+                                описание следующей задачи</button>
                         </div>
                     </div>
 
@@ -322,7 +387,7 @@
                         <label for="restrictions">Имеющиеся ограничения</label>
                         <textarea class="form-control" id="restrictions" rows="4"></textarea>
                         <small id="restrictionsHelp" class="form-text text-muted">
-                            1) Технические и архитектурные ограничения 
+                            1) Технические и архитектурные ограничения
                             <br />
                             2) Ограничения в доступах
                         </small>
@@ -332,18 +397,28 @@
                         <small id="attentionCommentsHelp" class="form-text text-muted">
                             Особенности процесса, важные комментарии
                         </small>
-
-                        <button class="btn btn-info" id="sendData" type="button" >Отправить анкету</button>
-
+                        <button class="btn btn-info" id="sendData" type="button">Отправить анкету</button>
                     </div>
                 </div>
-    
+
             </div>
         </form>
-            
 
     </div>
+
+    <script src="./scripts.js"></script>
     
-<script src="./scripts.js"></script>
+    <style>
+        .nav-link {
+            display: block;
+            height: 120px;
+            width: auto;
+            text-align: center;
+        }
+        label, small, h3, legend {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
 </body>
+
 </html>
