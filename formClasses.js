@@ -73,7 +73,6 @@ class ValidateInputs {
 
     customerName() {
         this.checkForOnlySpaces('customerName')
-
         if (document.querySelector('#customerName').value) {
             allData.customerContactData.name = document.querySelector('#customerName').value
 
@@ -85,10 +84,8 @@ class ValidateInputs {
 
     customerMail() {
         this.checkForOnlySpaces('customerEmail')
-
         if (document.querySelector('#customerEmail').value) {
             const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
             if (re.test(String(document.querySelector('#customerEmail').value).toLowerCase())) {
                 allData.customerContactData.email = document.querySelector('#customerEmail').value
                 return this.hideError('customerEmail')
@@ -102,11 +99,9 @@ class ValidateInputs {
 
     customerPhone() {
         if (document.querySelector('#customerPhone').value) {
-
             if (document.querySelector('#customerPhone').value.length == 18) {
                 allData.customerContactData.phone = document.querySelector('#customerPhone').value
                 return this.hideError('customerPhone')
-
             } else {
                 return this.showError('customerPhone')
             }
@@ -117,7 +112,6 @@ class ValidateInputs {
 
     customerUnit() {
         this.checkForOnlySpaces('customerUnit')
-
         if (document.querySelector('#customerUnit').value) {
             allData.customerContactData.unit = document.querySelector('#customerUnit').value
             return this.hideError('customerUnit')
@@ -131,7 +125,6 @@ class ValidateInputs {
         let validMail = this.customerMail()
         let validUnit = this.customerUnit()
         let validPhone = this.customerPhone()
-
         if (validName && validMail && validUnit && validPhone) {
             return true
         } else {
@@ -141,7 +134,6 @@ class ValidateInputs {
 
     processName() {
         this.checkForOnlySpaces('processName')
-
         if (document.querySelector('#processName').value) {
             allData.processInfo.processName = document.querySelector('#processName').value
             return this.hideError('processName')
@@ -152,8 +144,7 @@ class ValidateInputs {
 
     processShort() {
         this.checkForOnlySpaces('processShort')
-
-        if(document.querySelector('#processShort').value) {
+        if (document.querySelector('#processShort').value) {
             allData.processInfo.shortInfo = document.querySelector('#processShort').value
             return this.hideError('processShort')
         } else return this.showError('processShort')
@@ -161,7 +152,6 @@ class ValidateInputs {
 
     asIsExample() {
         this.checkForOnlySpaces('shortAsIsExample')
-
         if (document.querySelector('#shortAsIsExample').value) {
             allData.processInfo.asIs = document.querySelector('#shortAsIsExample').value
             return this.hideError('shortAsIsExample')
@@ -170,7 +160,6 @@ class ValidateInputs {
 
     toBeExample() {
         this.checkForOnlySpaces('shortToBeExample')
-
         if (document.querySelector('#shortToBeExample').value) {
             allData.processInfo.toBe = document.querySelector('#shortToBeExample').value
             return this.hideError('shortToBeExample')
@@ -181,7 +170,6 @@ class ValidateInputs {
         let validName = this.processName()
         let validAsIs = this.asIsExample()
         let validToBe = this.toBeExample()
-
         if (validName && validAsIs && validToBe) {
             return true
         } else return false
@@ -212,10 +200,8 @@ class ValidateInputs {
 
     processData() {
         this.checkForOnlySpaces('unStrDataPercent')
-
         if (document.querySelector('#dataCheck1').checked || document.querySelector('#dataCheck2').checked || (document.querySelector('#dataCheck3').checked && document.querySelector('#unStrDataPercent').value)) {
             document.querySelector('#dataInProcessInvalid').style.display = 'none'
-
             for (let i = 1; i < 4; i++) {
                 if (document.querySelector(`#dataCheck${i}`).checked) {
                     switch (i) {
@@ -229,7 +215,6 @@ class ValidateInputs {
                             allData.dataInProcess.unStandartUnStructData.checked = true
                             allData.dataInProcess.unStandartUnStructData.percent = document.querySelector('#unStrDataPercent').value
                             break
-
                     }
                 } else {
                     switch (i) {
@@ -246,7 +231,6 @@ class ValidateInputs {
                 }
             }
             return true
-
         } else {
             document.querySelector('#dataInProcessInvalid').style.display = 'block'
             return false

@@ -1,5 +1,4 @@
 let systemCount = 1
-
 const validate = new ValidateInputs()
 const changeForm = new FormEditing()
 
@@ -19,22 +18,17 @@ document.querySelector('#dataCheck3').addEventListener('change', e => {
 
 document.querySelector('#customerDataNext').addEventListener('click', e => {
     e.preventDefault()
-
     if (validate.firstForm()) {
         localStorage.setItem('savedEnteredData', JSON.stringify(allData))
         changeForm.goToNextFormBlock('pills-contact', 'pills-allInfo')
     }
-
 })
 
 document.querySelector('#processInfoNext').addEventListener('click', e => {
     e.preventDefault()
-
     validate.secondForm()
-
     if (validate.secondForm()) {
         localStorage.setItem('savedEnteredData', JSON.stringify(allData))
-
         changeForm.goToNextFormBlock('pills-allInfo', 'pills-processSet')
     }
 })
@@ -52,7 +46,6 @@ document.querySelector('#processSetNext').addEventListener('click', e => {
 
 document.querySelector('#countEntrProcessNext').addEventListener('click', e => {
     e.preventDefault()
-
     if (validate.employeeOrDifficult()) {
         localStorage.setItem('savedEnteredData', JSON.stringify(allData))
         changeForm.goToNextFormBlock('pills-countEntrProcess', 'pills-dataInProcess')
