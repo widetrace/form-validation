@@ -41,67 +41,12 @@ document.querySelector('#processInfoNext').addEventListener('click', e => {
 
 document.querySelector('#processSetNext').addEventListener('click', e => {
     e.preventDefault()
-
     if (validate.percentOfBusExt()) {
-        for (let i = 1; i < 8; i++) {
-            if (document.querySelector(`#rulesCheck${i}`).checked) {
-                switch (i) {
-                    case 1:
-                        allData.charOfProcess.algorythm = true
-                        break
-                    case 2:
-                        allData.charOfProcess.rules = true
-                        break
-                    case 3:
-                        allData.charOfProcess.order = true
-                        break
-                    case 4:
-                        allData.charOfProcess.editing = true
-                        break
-                    case 5:
-                        allData.charOfProcess.understandbl = true
-                        break
-                    case 6:
-                        allData.charOfProcess.handOperations = true
-                        break
-                    case 7:
-                        allData.charOfProcess.muchRepeat = true
-                        break
-                }
-            } else {
-                switch (i) {
-                    case 1:
-                        allData.charOfProcess.algorythm = false
-                        break
-                    case 2:
-                        allData.charOfProcess.rules = false
-                        break
-                    case 3:
-                        allData.charOfProcess.order = false
-                        break
-                    case 4:
-                        allData.charOfProcess.editing = false
-                        break
-                    case 5:
-                        allData.charOfProcess.understandbl = false
-                        break
-                    case 6:
-                        allData.charOfProcess.handOperations = false
-                        break
-                    case 7:
-                        allData.charOfProcess.muchRepeat = false
-                        break
-                }
-            }
-        }
-
+        document.querySelectorAll(`.rule-checkBox`).forEach(e => {
+            allData.charOfProcess[e.value] = e.checked
+        })
         localStorage.setItem('savedEnteredData', JSON.stringify(allData))
-
         changeForm.goToNextFormBlock('pills-processSet', 'pills-countEntrProcess')
-    } else {
-        document.querySelector('#percentageOfBusExt').classList.add('border', 'border-danger')
-
-        document.querySelector('#percentageOfBusExtInvalid').style.display = 'block'
     }
 })
 
