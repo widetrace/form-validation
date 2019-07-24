@@ -128,25 +128,17 @@ document.querySelector('#addInfoForSystems').addEventListener('click', e => {
     for (let i = 1; i < document.querySelector('#systemsNames').childElementCount + 1; i++) {
         validate.checkForOnlySpaces(`systemName${i}`)
         if (!document.querySelector(`#systemName${i}`).value) {
-            document.querySelector('#someNameMissed').style.display = 'block'
+            changeForm.showById('someNameMissed')
             errorStatus = true
             break
         }
     }
     if (!errorStatus) {
-        changeForm.hideById('systemsNames')
-        changeForm.hideById('systemsButtons')
-        changeForm.hideById('systemsAddInfo')
-        changeForm.hideById('someNameMissed')
+        let massiveToHide = ['systemsNames','systemsButtons','systemsAddInfo','someNameMissed'].forEach(e => changeForm.hideById(e))
+            massiveToShow = ['systemsInfo', 'nextSystem'].forEach(e => changeForm.showById(e))
         allData.usedSystems.splice(0, allData.usedSystems.length)
         document.querySelector('#systemInfo-name').innerHTML = document.querySelector(`#systemName1`).value
-        document.querySelector("#systemsInfo").style.display = 'block'
-        if (document.querySelector('#systemsNames').childElementCount > 1) {
-            document.querySelector('#nextSystem').style.display = 'block'
-        } else {
-            document.querySelector('#nextSystem').style.display = 'block'
-            document.querySelector('#nextSystem').innerHTML = 'Next >>>'
-        }
+        document.querySelector('#systemsNames').childElementCount > 1 ? '' : document.querySelector('#nextSystem').innerHTML = 'Дальше >>>'
     }
 })
 
@@ -181,7 +173,7 @@ document.querySelector('#nextSystem').addEventListener('click', e => {
             document.querySelector('#systemInfo-name').innerHTML = document.querySelector(`#systemName${systemCount}`).value
         }
         document.querySelector('#pills-usedSystems-tab').className = 'nav-link disabled'
-    } else document.querySelector('#systemInfoInvalid').style.display = 'block'
+    } else changeForm.showById('systemInfoInvalid')
 })
 
 document.querySelector('#sendData').addEventListener('click', e => {

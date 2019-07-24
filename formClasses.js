@@ -84,6 +84,8 @@ class ValidateInputs {
     }
 
     customerMail() {
+        this.checkForOnlySpaces('customerEmail')
+
         if (document.querySelector('#customerEmail').value) {
             const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
@@ -146,6 +148,15 @@ class ValidateInputs {
         } else {
             return this.showError('processName')
         }
+    }
+
+    processShort() {
+        this.checkForOnlySpaces('processShort')
+
+        if(document.querySelector('#processShort').value) {
+            allData.processInfo.shortInfo = document.querySelector('#processShort').value
+            return this.hideError('processShort')
+        } else return this.showError('processShort')
     }
 
     asIsExample() {
