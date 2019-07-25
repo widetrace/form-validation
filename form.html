@@ -76,27 +76,27 @@
                             номер телефона или ваш email</small>
 
                         <label for="customerName" class="mt-3">ФИО</label>
-                        <input class="form-control" type="text" id="customerName" placeholder="Ivanov Ivan Ivanovich">
+                        <input class="form-control" type="text" id="customerName" placeholder="Ivanov Ivan Ivanovich" name="customerContactData">
                         <small id="customerNameHelp" class="form-text text-muted">Как к вам обращаться</small>
                         <small id="customerNameInvalid" class="form-text text-danger" style="display: none">Это
                             обязательное поле</small>
 
                         <label for="customerEmail" class="mt-3">Email</label>
-                        <input class="form-control" type="text" id="customerEmail" placeholder="youremail@yourmail.com">
+                        <input class="form-control" type="text" id="customerEmail" placeholder="youremail@yourmail.com" name="customerContactData">
                         <small id="customerEmailHelp" class="form-text text-muted">Почта для связи с вами</small>
                         <small id="customerEmailInvalid" class="form-text text-danger" style="display: none">Неправильно
                             введена почта</small>
 
                         <label for="customerPhone" class="mt-3">Номер телефона</label>
                         <input class="form-control input-medium bfh-phone" type="text" id="customerPhone"
-                            data-format="+7 (ddd) ddd-dd-dd">
+                            data-format="+7 (ddd) ddd-dd-dd" name="customerContactData">
                         <small id="customerPhoneHelp" class="form-text text-muted">Номер телефона, через который с вами
                             можно связаться (пример: +7 888 888 88 88)</small>
                         <small id="customerPhoneInvalid" class="form-text text-danger" style="display: none">Неправильно
                             введен номер телефона</small>
 
                         <label for="customerUnit" class="mt-3">Подразделение</label>
-                        <input class="form-control" type="text" id="customerUnit" placeholder="МТС ИТ">
+                        <input class="form-control" type="text" id="customerUnit" placeholder="МТС ИТ" name="customerContactData">
                         <small id="customerUnitHelp" class="form-text text-muted">Название вашего подразделения</small>
                         <small id="customerUnitInvalid" class="form-text text-danger" style="display: none">Введите
                             название подразделения</small>
@@ -111,21 +111,21 @@
                             пункты</small>
 
                         <label for="processName" class="mt-3">Наименование процесса</label>
-                        <input class="form-control" type="text" id="processName">
+                        <input class="form-control" type="text" id="processName" name="processInfo">
                         <small id="processHelp" class="form-text text-muted">Краткое наименование, отражающее предмет и
                             состав операций</small>
                         <small id="processNameInvalid" class="form-text text-danger" style="display: none">Обязательно
                             для ввода</small>
 
                         <label for="shortAsIsExample" class="mt-3">Краткое описание процесса AS IS</label>
-                        <textarea class="form-control" id="shortAsIsExample" rows="4"></textarea>
+                        <textarea class="form-control" id="shortAsIsExample" rows="4" name="processInfo"></textarea>
                         <small id="shortAsIsExampleHelp" class="form-text text-muted">Основные операции процесса,
                             выполняемые сотрудниками, с указанием программ и систем</small>
                         <small id="shortAsIsExampleInvalid" class="form-text text-danger"
                             style="display: none">Обязательно для ввода</small>
 
                         <label for="shortToBeExample" class="mt-3">Краткое описание процесса TO BE</label>
-                        <textarea class="form-control" id="shortToBeExample" rows="4"></textarea>
+                        <textarea class="form-control" id="shortToBeExample" rows="4" name="processInfo"></textarea>
                         <small id="shortToBeExampleHelp" class="form-text text-muted">
                             1) Основные операции процесса, выполняемые роботом
                             <br />
@@ -141,13 +141,13 @@
                     <h3 class="display-4">Характеристика процесса</h3>
                     <div class="form-group mt-3">
                         <div class="form-check">
-                            <input class="form-check-input rule-checkBox" type="checkbox" id="rulesCheck1" value="algorythm">
-                            <label class="form-check-label" for="rulesCheck1">Операции процесса можно представить в виде
+                            <input class="form-check-input rule-checkBox" type="checkbox" id="algorythm" value="algorythm">
+                            <label class="form-check-label" for="algorythm">Операции процесса можно представить в виде
                                 алгоритма</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input rule-checkBox" type="checkbox" id="rulesCheck2" value="rules">
-                            <label class="form-check-label" for="rulesCheck2">В точках ветвления процесса решение
+                            <input class="form-check-input rule-checkBox" type="checkbox" id="rules" value="rules">
+                            <label class="form-check-label" for="rules">В точках ветвления процесса решение
                                 принимается по установленным правилам</label>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">%</div>
                             </div>
-                            <input type="text" class="form-control" id="percentageOfBusExt">
+                            <input type="text" class="form-control" id="percentageOfBusExt" name="charOfProcess">
                         </div>
                         <small id="percentageOfBusExcHelp" class="form-text text-muted">Ориентировочный процент
                             операций, где наступают события, которые переводят процесс к сотруднику для принятия
@@ -167,27 +167,27 @@
                     </div>
                     <div class="form-group ">
                         <div class="form-check">
-                            <input class="form-check-input rule-checkBox" type="checkbox" id="rulesCheck3" value="order">
-                            <label class="form-check-label" for="rulesCheck3">Процесс регламентирован и выполняется в
+                            <input class="form-check-input rule-checkBox" type="checkbox" id="order" value="order">
+                            <label class="form-check-label" for="order">Процесс регламентирован и выполняется в
                                 соответствии с установленными требованиями</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input rule-checkBox" type="checkbox" id="rulesCheck4" value="editing">
-                            <label class="form-check-label" for="rulesCheck4">Изменения вносятся редко</label>
+                            <input class="form-check-input rule-checkBox" type="checkbox" id="editing" value="editing">
+                            <label class="form-check-label" for="editing">Изменения вносятся редко</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input rule-checkBox" type="checkbox" id="rulesCheck5" value="understandbl">
-                            <label class="form-check-label" for="rulesCheck5">Процесс хорошо изучен и понятен владельцу
+                            <input class="form-check-input rule-checkBox" type="checkbox" id="understandbl" value="understandbl">
+                            <label class="form-check-label" for="understandbl">Процесс хорошо изучен и понятен владельцу
                                 и исполнителям</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input rule-checkBox" type="checkbox" id="rulesCheck6" value="handOperations">
-                            <label class="form-check-label" for="rulesCheck6">Ручные операции в программах и
+                            <input class="form-check-input rule-checkBox" type="checkbox" id="handOperations" value="handOperations">
+                            <label class="form-check-label" for="handOperations">Ручные операции в программах и
                                 системах</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input rule-checkBox" type="checkbox" id="rulesCheck7" value="muchRepeat">
-                            <label class="form-check-label" for="rulesCheck7">Большое число повторений операций</label>
+                            <input class="form-check-input rule-checkBox" type="checkbox" id="muchRepeat" value="muchRepeat">
+                            <label class="form-check-label" for="muchRepeat">Большое число повторений операций</label>
                         </div>
                     </div>
                     <button type="button" class="btn btn-info float-right " id="processSetNext">Дальше >>></button>
@@ -200,9 +200,9 @@
                         <small id="countrEtrProcessInvalid" class="form-text text-danger" style="display: none">Нужно
                             ввести хотя бы одно значение</small>
 
-                        <label for="numberOfWorkers" class="mt-3">Количество сотрудников, занятых в процессе</label>
-                        <input class="form-control" type="text" id="numberOfWorkers">
-                        <small id="numberOfWorkersHelp" class="form-text text-muted">В показателе FTE (полностью занятая
+                        <label for="numberOfEmployee" class="mt-3">Количество сотрудников, занятых в процессе</label>
+                        <input class="form-control" type="text" id="numberOfEmployee">
+                        <small id="numberOfEmployeeHelp" class="form-text text-muted">В показателе FTE (полностью занятая
                             штатная единица) или количество сотрудников и процент их занятости в процессе</small>
 
                         <label for="howHardIsIt" class="mt-3">Трудоемкость процесса</label>
@@ -227,19 +227,19 @@
                             отметить данные вашего процесса</small>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="dataCheck1">
-                            <label class="form-check-label" for="dataCheck1">Стандартные данные (файл, содержащий
+                            <input class="form-check-input" type="checkbox" id="standartData" name="dataInProcess">
+                            <label class="form-check-label" for="standartData">Стандартные данные (файл, содержащий
                                 шаблонную форму с постоянными идентифицируемыми полями; интерфейс системы)</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="dataCheck2">
-                            <label class="form-check-label" for="dataCheck2">Нестандартные структурированные данные
+                            <input class="form-check-input" type="checkbox" id="unStandartStructData" name="dataInProcess">
+                            <label class="form-check-label" for="unStandartStructData">Нестандартные структурированные данные
                                 (файл XML; файл Excel, Word, PowerPoint; конвертируемый файл PDF; текст с возможностью
                                 определения сущностей)</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="dataCheck3">
-                            <label class="form-check-label" for="dataCheck3">Нестандартные неструктурированные данные
+                            <input class="form-check-input" type="checkbox" id="dataCheck">
+                            <label class="form-check-label" for="dataCheck">Нестандартные неструктурированные данные
                                 (графическое изображение; отсканированный неконвертируемый файл; произвольный
                                 текст)</label>
                         </div>
@@ -392,9 +392,9 @@
                             2) Ограничения в доступах
                         </small>
 
-                        <label for="attentionComments">Области, требующие внимания</label>
-                        <textarea class="form-control" id="attentionComments" rows="4"></textarea>
-                        <small id="attentionCommentsHelp" class="form-text text-muted">
+                        <label for="comments">Области, требующие внимания</label>
+                        <textarea class="form-control" id="comments" rows="4"></textarea>
+                        <small id="commentsHelp" class="form-text text-muted">
                             Особенности процесса, важные комментарии
                         </small>
                         <button class="btn btn-info" id="sendData" type="button">Отправить анкету</button>

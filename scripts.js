@@ -12,7 +12,7 @@ document.querySelector('#delSystem').addEventListener('click', e => {
     changeForm.removeLastSystem()
 })
 
-document.querySelector('#dataCheck3').addEventListener('change', e => {
+document.querySelector('#dataCheck').addEventListener('change', e => {
     e.target.checked ? document.querySelector('.unStrPercent').style.display = 'block' : document.querySelector('.unStrPercent').style.display = 'none'
 })
 
@@ -35,7 +35,7 @@ document.querySelector('#processInfoNext').addEventListener('click', e => {
 
 document.querySelector('#processSetNext').addEventListener('click', e => {
     e.preventDefault()
-    if (validate.percentOfBusExt()) {
+    if (validate.customInput('percentageOfBusExt')) {
         document.querySelectorAll(`.rule-checkBox`).forEach(e => {
             allData.charOfProcess[e.value] = e.checked
         })
@@ -72,7 +72,7 @@ document.querySelector('#addInfoForSystems').addEventListener('click', e => {
         }
     }
     if (!errorStatus) {
-        let massiveToHide = ['systemsNames','systemsButtons','systemsAddInfo','someNameMissed'].forEach(e => changeForm.hideById(e))
+        let massiveToHide = ['systemsNames','systemsButtons','systemsAddInfo','someNameMissed'].forEach(e => changeForm.hideById(e)),
             massiveToShow = ['systemsInfo', 'nextSystem'].forEach(e => changeForm.showById(e))
         allData.usedSystems.splice(0, allData.usedSystems.length)
         document.querySelector('#systemInfo-name').innerHTML = document.querySelector(`#systemName1`).value
@@ -116,10 +116,12 @@ document.querySelector('#nextSystem').addEventListener('click', e => {
 
 document.querySelector('#sendData').addEventListener('click', e => {
     e.preventDefault()
-    validate.checkForOnlySpaces('restrictions')
-    validate.checkForOnlySpaces('attentionComments')
-    document.querySelector('#restrictions').value ? allData.extraInfo.restrictions = document.querySelector('#restrictions').value : console.log('no data in restr')
-    document.querySelector('#attentionComments').value ? allData.extraInfo.comments = document.querySelector('#attentionComments').value : console.log('no comments')
+    let restElem = document.querySelector('#restrictions')
+    let commentsElem = document.querySelector('#comments')
+    validate.checkForOnlySpaces(restElem)
+    validate.checkForOnlySpaces(commentsElem)
+    restElem.value ? allData.extraInfo.restrictions = restElem.value : console.log('no data in restr')
+    commentsElem.value ? allData.extraInfo.comments = commentsElem.value : console.log('no comments')
     localStorage.setItem('savedEnteredData', JSON.stringify(allData))
 })
 
@@ -128,38 +130,29 @@ const allData = localStorage.getItem('savedEnteredData') ? JSON.parse(localStora
     processInfo: {},
     charOfProcess: {},
     countEntrProcess: {},
-    dataInProcess: {
-        unStandartUnStructData: {},
-    },
+    dataInProcess: {},
     usedSystems: [],
     extraInfo: {},
 }
 
 if (localStorage.getItem('savedEnteredData')) {
-    allData.customerContactData.name ? document.querySelector('#customerName').value = allData.customerContactData.name : ''
-    allData.customerContactData.email ? document.querySelector('#customerEmail').value = allData.customerContactData.email : ''
-    allData.customerContactData.phone ? document.querySelector('#customerPhone').value = allData.customerContactData.phone : ''
-    allData.customerContactData.unit ? document.querySelector('#customerUnit').value = allData.customerContactData.unit : ''
-    allData.processInfo.processName ? document.querySelector('#processName').value = allData.processInfo.processName : ''
-    allData.processInfo.asIs ? document.querySelector('#shortAsIsExample').value = allData.processInfo.asIs : ''
-    allData.processInfo.toBe ? document.querySelector('#shortToBeExample').value = allData.processInfo.toBe : ''
-    allData.charOfProcess.percentageOfBusExt ? document.querySelector('#percentageOfBusExt').value = allData.charOfProcess.percentageOfBusExt : ''
-    allData.charOfProcess.algorythm ? document.querySelector('#rulesCheck1').checked = true : ''
-    allData.charOfProcess.rules ? document.querySelector('#rulesCheck2').checked = true : ''
-    allData.charOfProcess.order ? document.querySelector('#rulesCheck3').checked = true : ''
-    allData.charOfProcess.editing ? document.querySelector('#rulesCheck4').checked = true : ''
-    allData.charOfProcess.understandbl ? document.querySelector('#rulesCheck5').checked = true : ''
-    allData.charOfProcess.handOperations ? document.querySelector('#rulesCheck6').checked = true : ''
-    allData.charOfProcess.muchRepeat ? document.querySelector('#rulesCheck7').checked = true : ''
-    allData.countEntrProcess.howHardIsIt ? document.querySelector('#howHardIsIt').value = allData.countEntrProcess.howHardIsIt : ''
-    allData.countEntrProcess.numberOfEmployee ? document.querySelector('#numberOfWorkers').value = allData.countEntrProcess.numberOfEmployee : ''
-    allData.dataInProcess.standartData ? document.querySelector('#dataCheck1').checked = true : ''
-    allData.dataInProcess.unStandartStructData ? document.querySelector('#dataCheck2').checked = true : ''
-    allData.dataInProcess.unStandartUnStructData.checked ? document.querySelector('#dataCheck3').checked = true : ''
-    allData.dataInProcess.unStandartUnStructData.percent ? document.querySelector('#unStrDataPercent').value = allData.dataInProcess.unStandartUnStructData.percent : ''
-    allData.dataInProcess.unStandartUnStructData.percent ? document.querySelector('.unStrPercent').style.display = 'block' : ''
-    allData.extraInfo.restrictions ? document.querySelector('#restrictions').value = allData.extraInfo.restrictions : ''
-    allData.extraInfo.comments ? document.querySelector('#attentionComments').value = allData.extraInfo.comments : ''
+    Object.keys(allData).forEach(mainKey => {
+        if (mainKey != 'usedSystems') {
+            Object.keys(allData[mainKey]).forEach(subKey => {
+                let elem = document.querySelector(`#${subKey}`)
+                if (elem.type == 'text' || elem.type == 'textarea') {
+                    elem.value = allData[mainKey][subKey]
+                    elem.style.display = 'block'
+                    if (subKey == 'unStrDataPercent' && allData[mainKey][subKey]) {
+                        document.querySelector('#dataCheck').checked = true
+                        document.querySelector('.unStrPercent').style.display = 'block'
+                    }
+                } else if (elem.type == 'checkbox') {
+                    elem.checked = allData[mainKey][subKey]
+                } else console.log('smthng goes wrong')
+            })
+        }
+    })
     if (allData.usedSystems.length > 1) {
         allData.usedSystems.forEach((item, i) => {
             if (i + 1 == 1) {
