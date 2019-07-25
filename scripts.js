@@ -2,6 +2,8 @@ let systemCount = 1
 const validate = new ValidateInputs()
 const changeForm = new FormEditing()
 
+document.querySelector('#test').style.display = 'none'
+
 document.querySelector('#addSystem').addEventListener('click', e => {
     e.preventDefault()
     changeForm.addSystem()
@@ -64,7 +66,8 @@ document.querySelector('#addInfoForSystems').addEventListener('click', e => {
     e.preventDefault()
     let errorStatus = false
     for (let i = 1; i < document.querySelector('#systemsNames').childElementCount + 1; i++) {
-        validate.checkForOnlySpaces(`systemName${i}`)
+        let elem = document.querySelector(`#systemName${i}`)
+        validate.checkForOnlySpaces(elem)
         if (!document.querySelector(`#systemName${i}`).value) {
             changeForm.showById('someNameMissed')
             errorStatus = true
@@ -93,7 +96,7 @@ document.querySelector('#nextSystem').addEventListener('click', e => {
         let systemObj = {
             name: document.querySelector('#systemInfo-name').innerHTML,
             desktopNumber: document.querySelector('#desktopNumber').value,
-            apiAvaible: document.querySelector('#apiAvaible1').checked ? true : false,
+            apiAvaible: document.querySelector('#apiAvaible1').checked,
             systemEnter: document.querySelector('#systemEnter1').checked ? 'Straight' : 'VDI / Citrix',
             testHabitat: document.querySelector('#testHabitat1').checked ? 'Avaible' : 'Not avaible'
         }
@@ -142,7 +145,6 @@ if (localStorage.getItem('savedEnteredData')) {
                 let elem = document.querySelector(`#${subKey}`)
                 if (elem.type == 'text' || elem.type == 'textarea') {
                     elem.value = allData[mainKey][subKey]
-                    elem.style.display = 'block'
                     if (subKey == 'unStrDataPercent' && allData[mainKey][subKey]) {
                         document.querySelector('#dataCheck').checked = true
                         document.querySelector('.unStrPercent').style.display = 'block'
@@ -150,6 +152,18 @@ if (localStorage.getItem('savedEnteredData')) {
                 } else if (elem.type == 'checkbox') {
                     elem.checked = allData[mainKey][subKey]
                 } else console.log('smthng goes wrong')
+            })
+        } else {
+            allData[mainKey].forEach(e => {
+                let ulElem = document.querySelector('#pills-tab')
+                let liElem = document.createElement('li')
+                liElem.className = 'nav-item ml-3'
+                let liSubElem = document.querySelector('#pills-usedSystems-tab').cloneNode()
+                Object.assign(liSubElem, {id: `pills-${e.name.replace(/\s/g, '')}-tab`, href: `pills-${e.name.replace(/\s/g, '')}`, innerText: e.name})
+                liSubElem.setAttribute('aria-controls', `pills-${e.name.replace(/\s/g, '')}`)
+                liElem.appendChild(liSubElem)
+                ulElem.insertBefore(liElem, ulElem.children[ulElem.childElementCount - 1])
+                
             })
         }
     })
@@ -166,3 +180,28 @@ if (localStorage.getItem('savedEnteredData')) {
         allData.usedSystems[0] ? document.querySelector('#systemName1').value = allData.usedSystems[0].name : ''
     }
 }
+
+
+// const testArr = {
+//     name: 'test',
+//     des: 'uno',
+// }
+
+// Object.assign(testArr, {name: 'uno'})
+
+// console.log(testArr)
+
+
+
+// console.log(document.querySelector('#systemsNames').children[0].children[1].value)
+// console.log(document.querySelector('#pills-tab').lastChild)
+// const testElem = document.createElement('li')
+// const subTestElem = document.querySelector('#pills-usedSystems-tab').cloneNode()
+// Object.assign(subTestElem, {id: 'pills-UsedSystemsInfo-tab', href: '#pills-usedSystemsInfo', innerText: document.querySelector('#systemsNames').children[0].children[1].value})
+// subTestElem.setAttribute('aria-controls', 'pills-usedSystemsInfo')
+// testElem.className = 'nav-item ml-3'
+// testElem.appendChild(subTestElem)
+
+// document.querySelector('#pills-tab').insertBefore(testElem, document.querySelector('#pills-tab').children[document.querySelector('#pills-tab').childElementCount - 1])
+
+
