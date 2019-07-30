@@ -96,7 +96,6 @@ document.querySelector('#addInfoForSystems').addEventListener('click', e => {
                         allData.usedSystems.forEach((e, index) => {
                             if (e.name == sysName.split('-').join(' ')) {
                                 ind = index
-                                console.log(sysObj)
                             }
                         })
                         if (ind >= 0) {
@@ -183,7 +182,6 @@ if (localStorage.getItem('savedEnteredData')) {
                             allData.usedSystems.forEach((e, index) => {
                                 if (e.name == sysName.split('-').join(' ')) {
                                     ind = index
-                                    console.log(sysObj)
                                 }
                             })
                             if (ind >= 0) {
