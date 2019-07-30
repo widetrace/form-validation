@@ -2,8 +2,6 @@ let systemCount = 1
 const validate = new ValidateInputs()
 const changeForm = new FormEditing()
 
-document.querySelector('#test').style.display = 'none'
-
 document.querySelector('#addSystem').addEventListener('click', e => {
     e.preventDefault()
     changeForm.addSystem()
@@ -16,6 +14,11 @@ document.querySelector('#delSystem').addEventListener('click', e => {
 
 document.querySelector('#dataCheck').addEventListener('change', e => {
     e.target.checked ? document.querySelector('.unStrPercent').style.display = 'block' : document.querySelector('.unStrPercent').style.display = 'none'
+})
+
+document.querySelector('#prev').addEventListener('click', e => {
+    e.preventDefault()
+    changeForm.goToPrevFormBlock()
 })
 
 document.querySelector('#customerDataNext').addEventListener('click', e => {
@@ -64,63 +67,61 @@ document.querySelector('#dataInProcessNext').addEventListener('click', e => {
 
 document.querySelector('#addInfoForSystems').addEventListener('click', e => {
     e.preventDefault()
-    let errorStatus = false
-    for (let i = 1; i < document.querySelector('#systemsNames').childElementCount + 1; i++) {
-        let elem = document.querySelector(`#systemName${i}`)
-        validate.checkForOnlySpaces(elem)
-        if (!document.querySelector(`#systemName${i}`).value) {
-            changeForm.showById('someNameMissed')
-            errorStatus = true
-            break
-        }
-    }
-    if (!errorStatus) {
-        let massiveToHide = ['systemsNames','systemsButtons','systemsAddInfo','someNameMissed'].forEach(e => changeForm.hideById(e)),
-            massiveToShow = ['systemsInfo', 'nextSystem'].forEach(e => changeForm.showById(e))
-        allData.usedSystems.splice(0, allData.usedSystems.length)
-        document.querySelector('#systemInfo-name').innerHTML = document.querySelector(`#systemName1`).value
-        document.querySelector('#systemsNames').childElementCount > 1 ? '' : document.querySelector('#nextSystem').innerHTML = 'Дальше >>>'
-    }
-})
-
-document.querySelector('#nextSystem').addEventListener('click', e => {
-    e.preventDefault()
-    validate.checkForOnlySpaces('desktopNumber')
-    if (
-        (document.querySelector('#apiAvaible1').checked || document.querySelector('#apiAvaible2').checked) &&
-        (document.querySelector('#systemEnter1').checked || document.querySelector('#systemEnter2').checked) &&
-        (document.querySelector('#testHabitat1').checked || document.querySelector('#testHabitat2').checked) &&
-        document.querySelector('#desktopNumber').value
-    ) {
-        changeForm.hideById('systemInfoInvalid')
-        let systemObj = {
-            name: document.querySelector('#systemInfo-name').innerHTML,
-            desktopNumber: document.querySelector('#desktopNumber').value,
-            apiAvaible: document.querySelector('#apiAvaible1').checked,
-            systemEnter: document.querySelector('#systemEnter1').checked ? 'Straight' : 'VDI / Citrix',
-            testHabitat: document.querySelector('#testHabitat1').checked ? 'Avaible' : 'Not avaible'
-        }
-        allData.usedSystems.push(systemObj)
-        if (systemCount == document.querySelector('#systemsNames').childElementCount) {
-            localStorage.setItem('savedEnteredData', JSON.stringify(allData))
-            changeForm.goToNextFormBlock('pills-usedSystems', 'pills-extraInfo')
-        } else {
-            systemCount += 1
-            if (systemCount == document.querySelector('#systemsNames').childElementCount) {
-                document.querySelector('#nextSystem').innerHTML = 'Next >>>'
-            }
-            document.querySelectorAll('.radio-systemInfo').forEach(e => e.checked = false)
-            document.querySelector('#desktopNumber').value = ''
-            document.querySelector('#systemInfo-name').innerHTML = document.querySelector(`#systemName${systemCount}`).value
-        }
-        document.querySelector('#pills-usedSystems-tab').className = 'nav-link disabled'
-    } else changeForm.showById('systemInfoInvalid')
+    let nameMass = false
+    nameMass = validate.systemsInfo()
+    if (nameMass) {
+        nameMass.forEach(e => {
+            changeForm.createTabForSystem(e, function addToAllData(n) {
+                allData.usedSystems.push({name: e})
+                document.querySelector(`#infoSend${n.split(' ').join('-')}`).addEventListener('click', f => {
+                    f.preventDefault()
+                    const sysName = f.target.getAttribute('system')
+                    const deskInput = document.querySelector(`#desktopNumber${sysName}`).value.trim()
+                    const apiCheck = document.querySelectorAll(`[name="apiAvaible${sysName}"]`)
+                    const enterCheck = document.querySelectorAll(`[name="enter${sysName}"]`)
+                    const habCheck = document.querySelectorAll(`[name="testHabitat${sysName}"]`)
+                    if (deskInput 
+                        && (apiCheck[0].checked || apiCheck[1].checked) 
+                        && (enterCheck[0].checked || enterCheck[1].checked) 
+                        && (habCheck[0].checked || habCheck[1].checked)){
+                        changeForm.hideById(`info${sysName}Invalid`)
+                        let ind = false
+                        const sysObj = {
+                            name: sysName.split('-').join(' '),
+                            desktopNumber: deskInput,
+                            apiAvaible: apiCheck[0].checked,
+                            enter: enterCheck[0].checked,
+                            testHabitat: habCheck[0].checked
+                        }
+                        allData.usedSystems.forEach((e, index) => {
+                            if (e.name == sysName.split('-').join(' ')) {
+                                ind = index
+                                console.log(sysObj)
+                            }
+                        })
+                        if (ind >= 0) {
+                            allData.usedSystems[ind] = sysObj
+                        } else {
+                            allData.usedSystems.push(sysObj)
+                        }
+                        localStorage.setItem('savedEnteredData', JSON.stringify(allData))
+                        changeForm.goToNextFormBlock()
+                    } else {
+                        changeForm.showById(`info${sysName}Invalid`)
+                    }
+                })  
+            })
+        })
+        changeForm.goToNextFormBlock()
+    } else if (validate.getEnteredSystems()) {
+        changeForm.goToNextFormBlock()
+    } else changeForm.showById('someNameMissed')
 })
 
 document.querySelector('#sendData').addEventListener('click', e => {
     e.preventDefault()
-    let restElem = document.querySelector('#restrictions')
-    let commentsElem = document.querySelector('#comments')
+    const restElem = document.querySelector('#restrictions')
+    const commentsElem = document.querySelector('#comments')
     validate.checkForOnlySpaces(restElem)
     validate.checkForOnlySpaces(commentsElem)
     restElem.value ? allData.extraInfo.restrictions = restElem.value : console.log('no data in restr')
@@ -154,16 +155,49 @@ if (localStorage.getItem('savedEnteredData')) {
                 } else console.log('smthng goes wrong')
             })
         } else {
-            allData[mainKey].forEach(e => {
-                let ulElem = document.querySelector('#pills-tab')
-                let liElem = document.createElement('li')
-                liElem.className = 'nav-item ml-3'
-                let liSubElem = document.querySelector('#pills-usedSystems-tab').cloneNode()
-                Object.assign(liSubElem, {id: `pills-${e.name.replace(/\s/g, '')}-tab`, href: `pills-${e.name.replace(/\s/g, '')}`, innerText: e.name})
-                liSubElem.setAttribute('aria-controls', `pills-${e.name.replace(/\s/g, '')}`)
-                liElem.appendChild(liSubElem)
-                ulElem.insertBefore(liElem, ulElem.children[ulElem.childElementCount - 1])
-                
+            allData[mainKey].forEach((e) => {
+                changeForm.createTabForSystem(e.name, function enterLocalData (eName) {
+                    if (e.desktopNumber) {
+                        changeForm.enterSavedInfoAboutSystem(e)
+                    }
+                    document.querySelector(`#infoSend${eName.split(' ').join('-')}`).addEventListener('click', e => {
+                        e.preventDefault()
+                        const sysName = e.target.getAttribute('system')
+                        const deskInput = document.querySelector(`#desktopNumber${sysName}`).value.trim()
+                        const apiCheck = document.querySelectorAll(`[name="apiAvaible${sysName}"]`)
+                        const enterCheck = document.querySelectorAll(`[name="enter${sysName}"]`)
+                        const habCheck = document.querySelectorAll(`[name="testHabitat${sysName}"]`)
+                        if (deskInput 
+                            && (apiCheck[0].checked || apiCheck[1].checked) 
+                            && (enterCheck[0].checked || enterCheck[1].checked) 
+                            && (habCheck[0].checked || habCheck[1].checked)){
+                            changeForm.hideById(`info${sysName}Invalid`)
+                            let ind = false
+                            const sysObj = {
+                                name: sysName.split('-').join(' '),
+                                desktopNumber: deskInput,
+                                apiAvaible: apiCheck[0].checked,
+                                enter: enterCheck[0].checked,
+                                testHabitat: habCheck[0].checked
+                            }
+                            allData.usedSystems.forEach((e, index) => {
+                                if (e.name == sysName.split('-').join(' ')) {
+                                    ind = index
+                                    console.log(sysObj)
+                                }
+                            })
+                            if (ind >= 0) {
+                                allData.usedSystems[ind] = sysObj
+                            } else {
+                                allData.usedSystems.push(sysObj)
+                            }
+                            localStorage.setItem('savedEnteredData', JSON.stringify(allData))
+                            changeForm.goToNextFormBlock()
+                        } else {
+                            changeForm.showById(`info${sysName}Invalid`)
+                        }
+                    })
+                })
             })
         }
     })
@@ -180,28 +214,3 @@ if (localStorage.getItem('savedEnteredData')) {
         allData.usedSystems[0] ? document.querySelector('#systemName1').value = allData.usedSystems[0].name : ''
     }
 }
-
-
-// const testArr = {
-//     name: 'test',
-//     des: 'uno',
-// }
-
-// Object.assign(testArr, {name: 'uno'})
-
-// console.log(testArr)
-
-
-
-// console.log(document.querySelector('#systemsNames').children[0].children[1].value)
-// console.log(document.querySelector('#pills-tab').lastChild)
-// const testElem = document.createElement('li')
-// const subTestElem = document.querySelector('#pills-usedSystems-tab').cloneNode()
-// Object.assign(subTestElem, {id: 'pills-UsedSystemsInfo-tab', href: '#pills-usedSystemsInfo', innerText: document.querySelector('#systemsNames').children[0].children[1].value})
-// subTestElem.setAttribute('aria-controls', 'pills-usedSystemsInfo')
-// testElem.className = 'nav-item ml-3'
-// testElem.appendChild(subTestElem)
-
-// document.querySelector('#pills-tab').insertBefore(testElem, document.querySelector('#pills-tab').children[document.querySelector('#pills-tab').childElementCount - 1])
-
-
