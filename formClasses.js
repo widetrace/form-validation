@@ -1,3 +1,7 @@
+const test = /^[A-Za-z0-9 ]*[A-Za-z0-9][A-Za-z0-9 ]+$/
+// /^[A-Za-z0-9А-Яа-яЁё ]+$/
+
+
 class FormEditing {
     hideById(id) {
         document.querySelector(`#${id}`).style.display = 'none'
@@ -35,16 +39,19 @@ class FormEditing {
             newSystem.innerHTML =
                 `
                     <label for="systemName${elem.childElementCount + 1}" class="mt-3">Наименование системы ${elem.childElementCount + 1}</label>
-                    <input class="form-control" type="text" id="systemName${elem.childElementCount + 1}">
                     <small id="systemName1Help" class="form-text text-muted">
-                        Например:
-                        <br />
-                        - ORACLE, SAP, 1С
-                        <br />
-                        - Интернет-ресурс
-                        <br />
-                        - Внутренняя разработка
-                    </small>    
+                                Например:
+                                <br />
+                                - ORACLE, SAP, 1С
+                                <br />
+                                - Интернет-ресурс
+                                <br />
+                                - Внутренняя разработка
+                                <br />
+                                <br />
+                                Разрешены только буквы, цифры и пробелы
+                            </small>
+                    <input class="form-control" type="text" id="systemName${elem.childElementCount + 1}">  
                 `
         } else {
             newSystem.innerHTML =
@@ -61,7 +68,9 @@ class FormEditing {
 
     removeLastSystem() {
         const elem = document.querySelector('#systemsNames')
-        elem.removeChild(elem.lastChild)
+        if (elem.childElementCount > 0) {
+            elem.removeChild(elem.lastChild)
+        }
     }
 
     createDivForSystem(sysName) {
@@ -81,9 +90,9 @@ class FormEditing {
                 <h1 id="info${sysName}-name" class="display-4">${sysName.split('-').join(' ')}</h1>
 
                 <label for="DesktopNumber${sysName}">Количество экранов</label>
-                <input type="text" class="form-control" id="desktopNumber${sysName}">
                 <small id="DesktopNumber${sysName}Help" class="form-text text-muted">Ориентировочное количество
-                    рабочих экранов</small>
+                    рабочих экранов (не более 999)</small>
+                <input type="text" class="form-control" id="desktopNumber${sysName}">        
 
                 <fieldset class="form-group mt-2">
                     <div class="row">
@@ -152,7 +161,7 @@ class FormEditing {
                     </div>
                 </fieldset>
 
-                <button class="btn btn-info" id="infoSend${sysName}" system="${sysName}" type="button">Дальше >>></button>
+                <button class="btn btn-info float-right" id="infoSend${sysName}" system="${sysName}" type="button">Дальше >>></button>
             `
         return mainDiv
     }
@@ -169,7 +178,6 @@ class FormEditing {
         })
         liSubElem.setAttribute('aria-controls', `pills-${sysName}`)
         liElem.appendChild(liSubElem)
-        // liElem.style.display = 'none'
         return liElem
     }
 
@@ -213,15 +221,26 @@ class ValidateInputs {
         return true
     }
 
+    checkForLength(value, length) {
+        if (value.length > length) {
+            return false
+        } else return true
+    }
+
     checkForOnlySpaces(elem) {
         const regOnlySpaces = /^[\s]+$/
 
         regOnlySpaces.test(elem.value) ? elem.value = '' : ''
     }
 
-    customInput(id) {
+    customInput(id, length) {
         let elem = document.querySelector(`#${id}`)
         this.checkForOnlySpaces(elem)
+        if (length) {
+            if (this.checkForLength(elem.value, length)) {
+                this.customInput(id)
+            } else return this.showError(id)
+        }
         if (elem.value) {
             allData[elem.name][id] = elem.value
             return this.hideError(id)
@@ -302,17 +321,14 @@ class ValidateInputs {
     processData() {
         let allDataCheckElems = document.querySelectorAll('input[name="dataInProcess"]')
         let unStrDataPercentElem = document.querySelector('#unStrDataPercent')
-        unStrDataPercentElem.value ? this.checkForOnlySpaces(unStrDataPercentElem) : ''
-        
-        if (allDataCheckElems[0].checked || allDataCheckElems[1].checked ||  unStrDataPercentElem.value) {
-            document.querySelector('#dataInProcessInvalid').style.display = 'none'
-            allDataCheckElems[0].checked ? allData.dataInProcess.standartData = true : allData.dataInProcess.standartData = false
-            allDataCheckElems[1].checked ? allData.dataInProcess.unStandartStructData = true : allData.dataInProcess.unStandartStructData = false
-            unStrDataPercentElem.value ? allData.dataInProcess.unStrDataPercent = unStrDataPercentElem.value : ''
-
+        let unStrDataBool = unStrDataPercentElem.value ? this.customInput('unStrDataPercent', 2) : `Doesn't exist`
+        allData.dataInProcess.standartData = allDataCheckElems[0].checked
+        allData.dataInProcess.unStandartStructData = allDataCheckElems[1].checked
+        if (typeof unStrDataBool == 'string' && (allDataCheckElems[0].checked || allDataCheckElems[1].checked)) {
+            return true
+        } else if (unStrDataBool) {
             return true
         } else {
-            document.querySelector('#dataInProcessInvalid').style.display = 'block'
             return false
         }
     }
@@ -320,10 +336,12 @@ class ValidateInputs {
     getEnteredSystems() {
         const namesMass = []
         const uniqueNames = {}
+        const regForSysName = /^[A-Za-z0-9А-Яа-яЁё ]+$/
         for (let i = 1; i < document.querySelector('#systemsNames').childElementCount + 1; i++) {
             const elem   = document.querySelector(`#systemName${i}`)
             this.checkForOnlySpaces(elem)
-            if (!elem.value) {
+            regForSysName.test(elem.value) ? '' : elem.value = ''
+            if (!elem.value || elem.value.length > 25) {
                 return false
             }
             namesMass.push(elem.value.toLowerCase().trim())

@@ -2,6 +2,43 @@ let systemCount = 1
 const validate = new ValidateInputs()
 const changeForm = new FormEditing()
 
+function systemInfoSend(e) {
+    e.preventDefault()
+    const sysName = e.target.getAttribute('system')
+    const deskInput = document.querySelector(`#desktopNumber${sysName}`).value.trim()
+    const apiCheck = document.querySelectorAll(`[name="apiAvaible${sysName}"]`)
+    const enterCheck = document.querySelectorAll(`[name="enter${sysName}"]`)
+    const habCheck = document.querySelectorAll(`[name="testHabitat${sysName}"]`)
+    if ((deskInput && deskInput.length < 4) 
+        && (apiCheck[0].checked || apiCheck[1].checked) 
+        && (enterCheck[0].checked || enterCheck[1].checked) 
+        && (habCheck[0].checked || habCheck[1].checked)){
+        changeForm.hideById(`info${sysName}Invalid`)
+        let ind = false
+        const sysObj = {
+            name: sysName.split('-').join(' '),
+            desktopNumber: deskInput,
+            apiAvaible: apiCheck[0].checked,
+            enter: enterCheck[0].checked,
+            testHabitat: habCheck[0].checked
+        }
+        allData.usedSystems.forEach((e, index) => {
+            if (e.name == sysName.split('-').join(' ')) {
+                ind = index
+            }
+        })
+        if (ind >= 0) {
+            allData.usedSystems[ind] = sysObj
+        } else {
+            allData.usedSystems.push(sysObj)
+        }
+        localStorage.setItem('savedEnteredData', JSON.stringify(allData))
+        changeForm.goToNextFormBlock()
+    } else {
+        changeForm.showById(`info${sysName}Invalid`)
+    }
+}
+
 document.querySelector('#addSystem').addEventListener('click', e => {
     e.preventDefault()
     changeForm.addSystem()
@@ -25,7 +62,7 @@ document.querySelector('#customerDataNext').addEventListener('click', e => {
     e.preventDefault()
     if (validate.firstForm()) {
         localStorage.setItem('savedEnteredData', JSON.stringify(allData))
-        changeForm.goToNextFormBlock('pills-contact', 'pills-allInfo')
+        changeForm.goToNextFormBlock()
     }
 })
 
@@ -34,18 +71,18 @@ document.querySelector('#processInfoNext').addEventListener('click', e => {
     validate.secondForm()
     if (validate.secondForm()) {
         localStorage.setItem('savedEnteredData', JSON.stringify(allData))
-        changeForm.goToNextFormBlock('pills-allInfo', 'pills-processSet')
+        changeForm.goToNextFormBlock()
     }
 })
 
 document.querySelector('#processSetNext').addEventListener('click', e => {
     e.preventDefault()
-    if (validate.customInput('percentageOfBusExt')) {
+    if (validate.customInput('percentageOfBusExt', 2)) {
         document.querySelectorAll(`.rule-checkBox`).forEach(e => {
             allData.charOfProcess[e.value] = e.checked
         })
         localStorage.setItem('savedEnteredData', JSON.stringify(allData))
-        changeForm.goToNextFormBlock('pills-processSet', 'pills-countEntrProcess')
+        changeForm.goToNextFormBlock()
     }
 })
 
@@ -53,7 +90,7 @@ document.querySelector('#countEntrProcessNext').addEventListener('click', e => {
     e.preventDefault()
     if (validate.employeeOrDifficult()) {
         localStorage.setItem('savedEnteredData', JSON.stringify(allData))
-        changeForm.goToNextFormBlock('pills-countEntrProcess', 'pills-dataInProcess')
+        changeForm.goToNextFormBlock()
     }
 })
 
@@ -61,7 +98,7 @@ document.querySelector('#dataInProcessNext').addEventListener('click', e => {
     e.preventDefault()
     if (validate.processData()) {
         localStorage.setItem('savedEnteredData', JSON.stringify(allData))
-        changeForm.goToNextFormBlock('pills-dataInProcess', 'pills-usedSystems')
+        changeForm.goToNextFormBlock()
     }
 })
 
@@ -73,42 +110,7 @@ document.querySelector('#addInfoForSystems').addEventListener('click', e => {
         nameMass.forEach(e => {
             changeForm.createTabForSystem(e, function addToAllData(n) {
                 allData.usedSystems.push({name: e})
-                document.querySelector(`#infoSend${n.split(' ').join('-')}`).addEventListener('click', f => {
-                    f.preventDefault()
-                    const sysName = f.target.getAttribute('system')
-                    const deskInput = document.querySelector(`#desktopNumber${sysName}`).value.trim()
-                    const apiCheck = document.querySelectorAll(`[name="apiAvaible${sysName}"]`)
-                    const enterCheck = document.querySelectorAll(`[name="enter${sysName}"]`)
-                    const habCheck = document.querySelectorAll(`[name="testHabitat${sysName}"]`)
-                    if (deskInput 
-                        && (apiCheck[0].checked || apiCheck[1].checked) 
-                        && (enterCheck[0].checked || enterCheck[1].checked) 
-                        && (habCheck[0].checked || habCheck[1].checked)){
-                        changeForm.hideById(`info${sysName}Invalid`)
-                        let ind = false
-                        const sysObj = {
-                            name: sysName.split('-').join(' '),
-                            desktopNumber: deskInput,
-                            apiAvaible: apiCheck[0].checked,
-                            enter: enterCheck[0].checked,
-                            testHabitat: habCheck[0].checked
-                        }
-                        allData.usedSystems.forEach((e, index) => {
-                            if (e.name == sysName.split('-').join(' ')) {
-                                ind = index
-                            }
-                        })
-                        if (ind >= 0) {
-                            allData.usedSystems[ind] = sysObj
-                        } else {
-                            allData.usedSystems.push(sysObj)
-                        }
-                        localStorage.setItem('savedEnteredData', JSON.stringify(allData))
-                        changeForm.goToNextFormBlock()
-                    } else {
-                        changeForm.showById(`info${sysName}Invalid`)
-                    }
-                })  
+                document.querySelector(`#infoSend${n.split(' ').join('-')}`).addEventListener('click', systemInfoSend)  
             })
         })
         changeForm.goToNextFormBlock()
@@ -159,42 +161,7 @@ if (localStorage.getItem('savedEnteredData')) {
                     if (e.desktopNumber) {
                         changeForm.enterSavedInfoAboutSystem(e)
                     }
-                    document.querySelector(`#infoSend${eName.split(' ').join('-')}`).addEventListener('click', e => {
-                        e.preventDefault()
-                        const sysName = e.target.getAttribute('system')
-                        const deskInput = document.querySelector(`#desktopNumber${sysName}`).value.trim()
-                        const apiCheck = document.querySelectorAll(`[name="apiAvaible${sysName}"]`)
-                        const enterCheck = document.querySelectorAll(`[name="enter${sysName}"]`)
-                        const habCheck = document.querySelectorAll(`[name="testHabitat${sysName}"]`)
-                        if (deskInput 
-                            && (apiCheck[0].checked || apiCheck[1].checked) 
-                            && (enterCheck[0].checked || enterCheck[1].checked) 
-                            && (habCheck[0].checked || habCheck[1].checked)){
-                            changeForm.hideById(`info${sysName}Invalid`)
-                            let ind = false
-                            const sysObj = {
-                                name: sysName.split('-').join(' '),
-                                desktopNumber: deskInput,
-                                apiAvaible: apiCheck[0].checked,
-                                enter: enterCheck[0].checked,
-                                testHabitat: habCheck[0].checked
-                            }
-                            allData.usedSystems.forEach((e, index) => {
-                                if (e.name == sysName.split('-').join(' ')) {
-                                    ind = index
-                                }
-                            })
-                            if (ind >= 0) {
-                                allData.usedSystems[ind] = sysObj
-                            } else {
-                                allData.usedSystems.push(sysObj)
-                            }
-                            localStorage.setItem('savedEnteredData', JSON.stringify(allData))
-                            changeForm.goToNextFormBlock()
-                        } else {
-                            changeForm.showById(`info${sysName}Invalid`)
-                        }
-                    })
+                    document.querySelector(`#infoSend${eName.split(' ').join('-')}`).addEventListener('click', systemInfoSend)
                 })
             })
         }
