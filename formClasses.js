@@ -274,9 +274,9 @@ class ValidateInputs {
     }
 
     firstForm() {
-        let validName = this.customInput('customerName')
+        let validName = this.customInput('customerName', 64)
         let validMail = this.customerMail()
-        let validUnit = this.customInput('customerUnit')
+        let validUnit = this.customInput('customerUnit', 32)
         let validPhone = this.customerPhone()
         if (validName && validMail && validUnit && validPhone) {
             return true
@@ -294,7 +294,7 @@ class ValidateInputs {
     }
 
     secondForm() {
-        let validName = this.customInput('processName')
+        let validName = this.customInput('processName', 64)
         let validAsIs = this.customInput('shortAsIsExample')
         let validToBe = this.customInput('shortToBeExample')
         if (validName && validAsIs && validToBe) {
