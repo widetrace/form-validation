@@ -2,6 +2,51 @@ const test = /^[A-Za-z0-9 ]*[A-Za-z0-9][A-Za-z0-9 ]+$/
 // /^[A-Za-z0-9А-Яа-яЁё ]+$/
 
 
+// checkInput(id, options) {
+//     const elem = document.querySelector(`#${id}`)
+//     elem.value = elem.value.trim()
+//     if (elem.value) {
+//         if (options && typeof options == "object" && Object.keys(options).length > 0) {
+//             Object.keys(options).forEach(key => {
+//                 if (key == 'type') {
+//                     if (options[key] == 'phone'){
+//                         if (elem.value.length == 18) {
+//                             delete options[key]
+//                             this.checkInput(id, options)
+//                         } else return this.showError(id)
+//                     } else if (options[key] == 'number') {
+//                         const numReg = /^[0-9 \.]+$/
+//                         if (numReg.test(elem.value)) {
+//                             delete options[key]
+//                             this.checkInput(id, options)
+//                         } else {
+//                             return this.showError(id)
+//                         }
+//                     } else if (options[key] == 'email') {
+//                         const mailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+//                         if (mailReg.test(String(elem.value).toLowerCase())) {
+//                             delete options[key]
+//                             this.checkInput(id, options)
+//                         } else return this.showError(id)
+//                     }
+//                 } else if (key == 'length') {
+//                     if (elem.value.length > options[key]) {
+//                         return this.showError(id)
+//                     } else {
+//                         delete options[key]
+//                         this.checkInput(id, options)
+//                     } 
+//                 } else return this.showError(id)
+//             })
+//         } else {
+//             allData[elem.name][id] = elem.value
+//             return this.hideError(id)
+//         }
+//     } else {
+//         return this.showError(id)
+//     }
+// }
+
 class FormEditing {
     hideById(id) {
         document.querySelector(`#${id}`).style.display = 'none'
@@ -254,31 +299,26 @@ class ValidateInputs {
                 Object.keys(options).forEach(key => {
                     if (key == 'type') {
                         if (options[key] == 'phone'){
-                            if (elem.value.length == 18) {
-                                delete options[key]
-                                return this.checkInput(id, options)
-                            } else return this.showError(id)
+                            if (elem.value.length != 18) {
+                                return this.showError(id)
+                            } else delete options[key]
                         } else if (options[key] == 'number') {
                             const numReg = /^[0-9 \.]+$/
-                            if (numReg.test(elem.value)) {
-                                delete options[key]
-                                return this.checkInput(id, options)
-                            } else {
-                                return this.showError(id)
-                            }
+                            if (!(numReg.test(elem.value))) {
+                                this.showError(id)
+                            } else delete options[key]
                         } else if (options[key] == 'email') {
                             const mailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                            if (mailReg.test(String(elem.value).toLowerCase())) {
-                                delete options[key]
-                                return this.checkInput(id, options)
-                            } else return this.showError(id)
+                            if (!(mailReg.test(String(elem.value).toLowerCase()))) {
+                                return this.showError(id)
+                            } else delete options[key]
                         }
                     } else if (key == 'length') {
                         if (elem.value.length > options[key]) {
                             return this.showError(id)
                         } else {
                             delete options[key]
-                            return this.checkInput(id, options)
+                            this.checkInput(id, options)
                         } 
                     } else return this.showError(id)
                 })
@@ -286,6 +326,10 @@ class ValidateInputs {
                 allData[elem.name][id] = elem.value
                 return this.hideError(id)
             }
+            if(Object.keys(options).length == 0) {
+                allData[elem.name][id] = elem.value
+                return this.hideError(id)
+            } else return this.showError(id)
         } else {
             return this.showError(id)
         }
@@ -318,10 +362,11 @@ class ValidateInputs {
     }
 
     firstForm() {
-        let validName = this.checkInput('customerName', {length: 32})
-        let validMail = this.checkInput('customerEmail', {type: 'email'})
-        let validUnit = this.checkInput('customerUnit', {length: 16})
-        let validPhone = this.checkInput('customerPhone', {type: 'phone'})
+        const validName = this.checkInput('customerName', {length: 32})
+        const validMail = this.checkInput('customerEmail', {type: 'email'})
+        const validUnit = this.checkInput('customerUnit', {length: 16})
+        const validPhone = this.checkInput('customerPhone', {type: 'phone'})
+        console.log(`${validName} // ${validMail} // ${validUnit} // ${validPhone}`)
         if (validName && validMail && validUnit && validPhone) {
             return true
         } else {
@@ -329,21 +374,24 @@ class ValidateInputs {
         }
     }
 
-    processShort() {
-        this.checkForOnlySpaces('processShort')
-        if (document.querySelector('#processShort').value) {
-            allData.processInfo.processShort = document.querySelector('#processShort').value
-            return this.hideError('processShort')
-        } else return this.showError('processShort')
-    }
-
     secondForm() {
-        let validName = this.customInput('processName')
-        let validAsIs = this.customInput('shortAsIsExample')
-        let validToBe = this.customInput('shortToBeExample')
+        let validName = this.checkInput('processName', {length: 16})
+        let validAsIs = this.checkInput('shortAsIsExample')
+        let validToBe = this.checkInput('shortToBeExample')
         if (validName && validAsIs && validToBe) {
             return true
         } else return false
+    }
+
+    // Валидация короткого описания процесса для сокращенной заявки
+
+    processShort() {
+        const elem = document.querySelector('#processShort')
+        elem.value = elem.value.trim()
+        if (elem.value) {
+            allData.processInfo.processShort = elem.value
+            return this.hideError('processShort')
+        } else return this.showError('processShort')
     }
 
     employeeOrDifficult() {
