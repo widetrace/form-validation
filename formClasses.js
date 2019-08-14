@@ -302,11 +302,6 @@ class ValidateInputs {
                             if (elem.value.length != 18) {
                                 return this.showError(id)
                             } else delete options[key]
-                        } else if (options[key] == 'number') {
-                            const numReg = /^[0-9 \.]+$/
-                            if (!(numReg.test(elem.value))) {
-                                this.showError(id)
-                            } else delete options[key]
                         } else if (options[key] == 'email') {
                             const mailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                             if (!(mailReg.test(String(elem.value).toLowerCase()))) {
@@ -316,10 +311,15 @@ class ValidateInputs {
                     } else if (key == 'length') {
                         if (elem.value.length > options[key]) {
                             return this.showError(id)
-                        } else {
-                            delete options[key]
-                            this.checkInput(id, options)
-                        } 
+                        } else delete options[key]
+                    } else if(key == 'number') {
+                        if (!options[key].maxNum || !options[key].minNum) {
+                            return this.showError(id)
+                        }
+                        elem.value = parseFloat(elem.value.replace(',', '.'))
+                        if ((elem.value > options[key].maxNum && elem.value < options[key].minNum) || elem.value == 'NaN') {
+                            return this.showError(id)
+                        } else delete options[key]
                     } else return this.showError(id)
                 })
             } else {
@@ -335,38 +335,11 @@ class ValidateInputs {
         }
     }
 
-    customerMail() {
-        let elem = document.querySelector('#customerEmail')
-        this.checkForOnlySpaces(elem)
-        if (elem.value) {
-            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            if (re.test(String(elem.value).toLowerCase())) {
-                allData.customerContactData.customerEmail = elem.value
-                return this.hideError('customerEmail')
-            } else {
-                return this.showError('customerEmail')
-            }
-        } else {
-            return this.showError('customerEmail')
-        }
-    }
-
-    customerPhone() {
-        let elem = document.querySelector('#customerPhone')
-        if (elem.value.length == 18) {
-            allData.customerContactData.customerPhone = elem.value
-            return this.hideError('customerPhone')
-        } else {
-            return this.showError('customerPhone')
-        }
-    }
-
     firstForm() {
-        const validName = this.checkInput('customerName', {length: 32})
+        const validName = this.checkInput('customerName', {length: 64})
         const validMail = this.checkInput('customerEmail', {type: 'email'})
-        const validUnit = this.checkInput('customerUnit', {length: 16})
+        const validUnit = this.checkInput('customerUnit', {length: 32})
         const validPhone = this.checkInput('customerPhone', {type: 'phone'})
-        console.log(`${validName} // ${validMail} // ${validUnit} // ${validPhone}`)
         if (validName && validMail && validUnit && validPhone) {
             return true
         } else {
@@ -375,12 +348,31 @@ class ValidateInputs {
     }
 
     secondForm() {
-        let validName = this.checkInput('processName', {length: 16})
-        let validAsIs = this.checkInput('shortAsIsExample')
-        let validToBe = this.checkInput('shortToBeExample')
+        const validName = this.checkInput('processName', {length: 16})
+        const validAsIs = this.checkInput('shortAsIsExample')
+        const validToBe = this.checkInput('shortToBeExample')
         if (validName && validAsIs && validToBe) {
             return true
         } else return false
+    }
+
+    employeeOrDifficult() {
+        const workersElem = document.querySelector('#numberOfEmployee')
+        const difElem = document.querySelector('#howHardIsIt')
+        let validEmployee, validHard
+        workersElem.value = workersElem.value.trim()
+        difElem.value = difElem.value.trim()
+        workersElem.value ? validEmployee = this.checkInput(workersElem.id, {type: 'number'}) : ''
+        difElem.value ? validHard = this.checkInput(difElem.id, {type: 'number'}) : ''
+        if (validEmployee || validHard) {
+            validHard ? allData.countEntrProcess.howHardIsIt = difElem.value : ''
+            validEmployee ? allData.countEntrProcess.numberOfEmployee = workersElem.value : ''
+            document.querySelector('#countrEtrProcessInvalid').style.display = 'none'
+            return true
+        } else {
+            document.querySelector('#countrEtrProcessInvalid').style.display = 'block'
+            return false
+        }
     }
 
     // Валидация короткого описания процесса для сокращенной заявки
@@ -392,22 +384,6 @@ class ValidateInputs {
             allData.processInfo.processShort = elem.value
             return this.hideError('processShort')
         } else return this.showError('processShort')
-    }
-
-    employeeOrDifficult() {
-        let workersElem = document.querySelector('#numberOfEmployee')
-        let difElem = document.querySelector('#howHardIsIt')
-        this.checkForOnlySpaces(workersElem)
-        this.checkForOnlySpaces(difElem)
-        if (difElem.value || workersElem.value) {
-            difElem.value ? allData.countEntrProcess.howHardIsIt = difElem.value : ''
-            workersElem.value ? allData.countEntrProcess.numberOfEmployee = workersElem.value : ''
-            document.querySelector('#countrEtrProcessInvalid').style.display = 'none'
-            return true
-        } else {
-            document.querySelector('#countrEtrProcessInvalid').style.display = 'block'
-            return false
-        }
     }
 
     processData() {
@@ -493,6 +469,5 @@ class ValidateInputs {
             }
             return newSys
         }
-        
     }
 }

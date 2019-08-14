@@ -77,7 +77,7 @@ document.querySelector('#processInfoNext').addEventListener('click', e => {
 
 document.querySelector('#processSetNext').addEventListener('click', e => {
     e.preventDefault()
-    if (validate.customInput('percentageOfBusExt', 2)) {
+    if (validate.checkInput('percentageOfBusExt', {length: 2, number: {maxNum: 100, minNum: 0}})) {
         document.querySelectorAll(`.rule-checkBox`).forEach(e => {
             allData.charOfProcess[e.value] = e.checked
         })
@@ -127,7 +127,29 @@ document.querySelector('#sendData').addEventListener('click', e => {
     validate.checkForOnlySpaces(commentsElem)
     restElem.value ? allData.extraInfo.restrictions = restElem.value : console.log('no data in restr')
     commentsElem.value ? allData.extraInfo.comments = commentsElem.value : console.log('no comments')
+    allData.longForm = 1
     localStorage.setItem('savedEnteredData', JSON.stringify(allData))
+    const mainContainer = document.querySelector('.container')
+        for (let i = 0; i < mainContainer.childElementCount; i++) {
+            mainContainer.children[i].style.display = 'none'
+    }
+    const lastMes = document.createElement('h3')
+    const req = $.ajax( {
+        url: ajaxurl,
+        type: 'POST',
+        cache: false, 
+        data: `enteredData=${JSON.stringify(allData)}&action=sendmail`
+    })
+
+    req.done(msg => {
+        localStorage.clear()
+        lastMes.innerHTML = msg.status.value
+        setTimeout(() => window.location.replace("http://rpa.mts.ru:8002/"), 2500)
+    })
+    req.fail((jqXHR, textStatus) => {
+        lastMes.innerHTML = 'Something goes wrong, contact with administrator or retry'
+    })
+    mainContainer.appendChild(lastMes)
 })
 
 const allData = localStorage.getItem('savedEnteredData') ? JSON.parse(localStorage.getItem('savedEnteredData')) : {
