@@ -228,15 +228,14 @@ class ValidateInputs {
     }
 
     checkForOnlySpaces(elem) {
-        const regOnlySpaces = /^[\s]+$/
-
-        regOnlySpaces.test(elem.value) ? elem.value = '' : ''
+        elem.value = elem.value.trim()
     }
 
     customInput(id, length) {
         let elem = document.querySelector(`#${id}`)
         this.checkForOnlySpaces(elem)
         if (length) {
+            console.log(length)
             if (this.checkForLength(elem.value, length)) {
                 this.customInput(id)
             } else return this.showError(id)
@@ -245,6 +244,48 @@ class ValidateInputs {
             allData[elem.name][id] = elem.value
             return this.hideError(id)
         } else return this.showError(id)
+    }
+
+    checkInput(id, options) {
+        const elem = document.querySelector(`#${id}`)
+        elem.value = elem.value.trim()
+        if (elem.value) {
+            if (options && typeof options == "object" && Object.keys(options).length > 0) {
+                Object.keys(options).forEach(key => {
+                    if (key == 'type') {
+                        if (options[key] == 'phone'){
+                            return this.checkInput(id, {length: 18})
+                        } else if (options[key] == 'number') {
+                            const numReg = /^[0-9 \.]+$/
+                            if (numReg.test(elem.value)) {
+                                delete options[key]
+                                return this.checkInput(id, options)
+                            } else {
+                                return this.showError(id)
+                            }
+                        } else if (options[key] == 'email') {
+                            const mailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                            if (mailReg.test(String(elem.value).toLowerCase())) {
+                                delete options[key]
+                                return this.checkInput(id, options)
+                            } else return this.showError(id)
+                        }
+                    } else if (key == 'length') {
+                        if (elem.value.length > options[key]) {
+                            return this.showError(id)
+                        } else {
+                            delete options[key]
+                            return this.checkInput(id, options)
+                        } 
+                    } else return this.showError(id)
+                })
+            } else {
+                allData[elem.name][id] = elem.value
+                return this.hideError(id)
+            }
+        } else {
+            return this.showError(id)
+        }
     }
 
     customerMail() {
@@ -274,8 +315,8 @@ class ValidateInputs {
     }
 
     firstForm() {
-        let validName = this.customInput('customerName', 64)
-        let validMail = this.customerMail()
+        let validName = this.checkInput('customerName', {length: 32})
+        let validMail = this.checkInput('customerEmail', {type: 'email'})
         let validUnit = this.customInput('customerUnit', 32)
         let validPhone = this.customerPhone()
         if (validName && validMail && validUnit && validPhone) {
@@ -294,7 +335,7 @@ class ValidateInputs {
     }
 
     secondForm() {
-        let validName = this.customInput('processName', 64)
+        let validName = this.customInput('processName')
         let validAsIs = this.customInput('shortAsIsExample')
         let validToBe = this.customInput('shortToBeExample')
         if (validName && validAsIs && validToBe) {
