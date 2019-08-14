@@ -254,7 +254,10 @@ class ValidateInputs {
                 Object.keys(options).forEach(key => {
                     if (key == 'type') {
                         if (options[key] == 'phone'){
-                            return this.checkInput(id, {length: 18})
+                            if (elem.value.length == 18) {
+                                delete options[key]
+                                return this.checkInput(id, options)
+                            } else return this.showError(id)
                         } else if (options[key] == 'number') {
                             const numReg = /^[0-9 \.]+$/
                             if (numReg.test(elem.value)) {
@@ -317,8 +320,8 @@ class ValidateInputs {
     firstForm() {
         let validName = this.checkInput('customerName', {length: 32})
         let validMail = this.checkInput('customerEmail', {type: 'email'})
-        let validUnit = this.customInput('customerUnit', 32)
-        let validPhone = this.customerPhone()
+        let validUnit = this.checkInput('customerUnit', {length: 16})
+        let validPhone = this.checkInput('customerPhone', {type: 'phone'})
         if (validName && validMail && validUnit && validPhone) {
             return true
         } else {
