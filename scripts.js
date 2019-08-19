@@ -77,7 +77,7 @@ document.querySelector('#processInfoNext').addEventListener('click', e => {
 
 document.querySelector('#processSetNext').addEventListener('click', e => {
     e.preventDefault()
-    if (validate.checkInput('percentageOfBusExt', {length: 2, number: {maxNum: 100, minNum: 0}})) {
+    if (validate.checkInput('percentageOfBusExt', {number: {maxNum: 100, minNum: 0.1}})) {
         document.querySelectorAll(`.rule-checkBox`).forEach(e => {
             allData.charOfProcess[e.value] = e.checked
         })

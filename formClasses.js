@@ -237,9 +237,10 @@ class FormEditing {
 }
 
 class ValidateInputs {
-  showError(id) {
+  showError(id, msg) {
     document.querySelector(`#${id}`).classList.add("border", "border-danger");
     document.querySelector(`#${id}Invalid`).style.display = "block";
+    msg ? document.querySelector(`#${id}Invalid`).innerText = msg : '';
     return false;
   }
 
@@ -257,21 +258,6 @@ class ValidateInputs {
 
   checkForOnlySpaces(elem) {
     elem.value = elem.value.trim();
-  }
-
-  customInput(id, length) {
-    let elem = document.querySelector(`#${id}`);
-    this.checkForOnlySpaces(elem);
-    if (length) {
-      console.log(length);
-      if (this.checkForLength(elem.value, length)) {
-        this.customInput(id);
-      } else return this.showError(id);
-    }
-    if (elem.value) {
-      allData[elem.name][id] = elem.value;
-      return this.hideError(id);
-    } else return this.showError(id);
   }
 
   checkInput(id, options) {
@@ -292,7 +278,7 @@ class ValidateInputs {
             } else if (options[key] == "email") {
               const mailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
               if (!mailReg.test(String(elem.value).toLowerCase())) {
-                return this.showError(id);
+                return this.showError(id, 'Введите корректный e-mail. Пример: test@test.com');
               } else delete options[key];
             }
           } else if (key == "length") {
@@ -303,14 +289,17 @@ class ValidateInputs {
             if (!options[key].maxNum || !options[key].minNum) {
               return this.showError(id);
             }
-            elem.value = parseFloat(elem.value.replace(",", "."));
+            const elemValue = parseFloat(elem.value.replace(",", "."));
             if (
-              elem.value > options[key].maxNum ||
-              elem.value < options[key].minNum ||
-              elem.value == "NaN"
+              elemValue > options[key].maxNum ||
+              elemValue < options[key].minNum ||
+              elemValue == "NaN"
             ) {
-              return this.showError(id);
-            } else delete options[key];
+              return this.showError(id, `Число должно быть в промежутке от ${options[key].minNum} до ${options[key].maxNum}`);
+            } else {
+              elem.value = parseFloat(elem.value.replace(",", "."));
+              delete options[key];
+            } 
           } else return this.showError(id);
         });
       } else {
@@ -339,7 +328,7 @@ class ValidateInputs {
   }
 
   secondForm() {
-    const validName = this.checkInput("processName", { length: 16 });
+    const validName = this.checkInput("processName", { length: 32 });
     const validAsIs = this.checkInput("shortAsIsExample");
     const validToBe = this.checkInput("shortToBeExample");
     if (validName && validAsIs && validToBe) {
@@ -354,10 +343,10 @@ class ValidateInputs {
     workersElem.value = workersElem.value.trim();
     difElem.value = difElem.value.trim();
     workersElem.value
-      ? (validEmployee = this.checkInput(workersElem.id, { type: "number" }))
+      ? (validEmployee = this.checkInput(workersElem.id, { number: {maxNum: 9999, minNum: 1} }))
       : "";
     difElem.value
-      ? (validHard = this.checkInput(difElem.id, { type: "number" }))
+      ? (validHard = this.checkInput(difElem.id, { number: {maxNum: 9999, minNum: 1} }))
       : "";
     if (validEmployee || validHard) {
       validHard ? (allData.countEntrProcess.howHardIsIt = difElem.value) : "";
@@ -390,7 +379,7 @@ class ValidateInputs {
     );
     let unStrDataPercentElem = document.querySelector("#unStrDataPercent");
     let unStrDataBool = unStrDataPercentElem.value
-      ? this.customInput("unStrDataPercent", 2)
+      ? this.checkInput("unStrDataPercent", {number: {maxNum: 100, minNum: 0.01}})
       : `Doesn't exist`;
     allData.dataInProcess.standartData = allDataCheckElems[0].checked;
     allData.dataInProcess.unStandartStructData = allDataCheckElems[1].checked;
