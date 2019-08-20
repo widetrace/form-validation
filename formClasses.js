@@ -1,5 +1,6 @@
 // const test = /^[A-Za-z0-9 ]*[A-Za-z0-9][A-Za-z0-9 ]+$/
 // /^[A-Za-z0-9А-Яа-яЁё ]+$/
+// fractional
 
 class FormEditing {
   hideById(id) {
@@ -240,7 +241,7 @@ class ValidateInputs {
   showError(id, msg) {
     document.querySelector(`#${id}`).classList.add("border", "border-danger");
     document.querySelector(`#${id}Invalid`).style.display = "block";
-    msg ? document.querySelector(`#${id}Invalid`).innerText = msg : '';
+    msg ? (document.querySelector(`#${id}Invalid`).innerText = msg) : "";
     return false;
   }
 
@@ -248,12 +249,6 @@ class ValidateInputs {
     document.querySelector(`#${id}Invalid`).style.display = "none";
     document.querySelector(`#${id}`).className = "form-control";
     return true;
-  }
-
-  checkForLength(value, length) {
-    if (value.length > length) {
-      return false;
-    } else return true;
   }
 
   checkForOnlySpaces(elem) {
@@ -278,12 +273,18 @@ class ValidateInputs {
             } else if (options[key] == "email") {
               const mailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
               if (!mailReg.test(String(elem.value).toLowerCase())) {
-                return this.showError(id, 'Введите корректный e-mail. Пример: test@test.com');
+                return this.showError(
+                  id,
+                  "Введите корректный e-mail. Пример: test@test.com"
+                );
               } else delete options[key];
             }
           } else if (key == "length") {
             if (elem.value.length > options[key]) {
-              return this.showError(id);
+              return this.showError(
+                id,
+                `Допустимая длина поля: ${options[key]} символов`
+              );
             } else delete options[key];
           } else if (key == "number") {
             if (!options[key].maxNum || !options[key].minNum) {
@@ -293,13 +294,32 @@ class ValidateInputs {
             if (
               elemValue > options[key].maxNum ||
               elemValue < options[key].minNum ||
-              elemValue == "NaN"
+              isNaN(elemValue)
             ) {
-              return this.showError(id, `Число должно быть в промежутке от ${options[key].minNum} до ${options[key].maxNum}`);
+              const msg = isNaN(elemValue)
+                ? "Введено не число"
+                : `Число должно быть в промежутке от ${
+                    options[key].minNum
+                  } до ${options[key].maxNum}`;
+              return this.showError(id, msg);
+            } else if (options[key].fractional && `${elemValue}`.split(".").length == 2) {
+              if (
+                `${elemValue}`.split(".")[1].length > options[key].fractional
+              ) {
+                return this.showError(
+                  id,
+                  `Допустимое количество знаков после запятой: ${
+                    options[key].fractional
+                  }`
+                );
+              } else {
+                elem.value = elemValue;
+                delete options[key];
+              }
             } else {
-              elem.value = parseFloat(elem.value.replace(",", "."));
+              elem.value = elemValue;
               delete options[key];
-            } 
+            }
           } else return this.showError(id);
         });
       } else {
@@ -343,10 +363,14 @@ class ValidateInputs {
     workersElem.value = workersElem.value.trim();
     difElem.value = difElem.value.trim();
     workersElem.value
-      ? (validEmployee = this.checkInput(workersElem.id, { number: {maxNum: 9999, minNum: 1} }))
+      ? (validEmployee = this.checkInput(workersElem.id, {
+          number: { maxNum: 9999, minNum: 1 }
+        }))
       : "";
     difElem.value
-      ? (validHard = this.checkInput(difElem.id, { number: {maxNum: 9999, minNum: 1} }))
+      ? (validHard = this.checkInput(difElem.id, {
+          number: { maxNum: 9999, minNum: 1 }
+        }))
       : "";
     if (validEmployee || validHard) {
       validHard ? (allData.countEntrProcess.howHardIsIt = difElem.value) : "";
@@ -362,24 +386,15 @@ class ValidateInputs {
     }
   }
 
-  // Валидация короткого описания процесса для сокращенной заявки
-
-  processShort() {
-    const elem = document.querySelector("#processShort");
-    elem.value = elem.value.trim();
-    if (elem.value) {
-      allData.processInfo.processShort = elem.value;
-      return this.hideError("processShort");
-    } else return this.showError("processShort");
-  }
-
   processData() {
     let allDataCheckElems = document.querySelectorAll(
       'input[name="dataInProcess"]'
     );
     let unStrDataPercentElem = document.querySelector("#unStrDataPercent");
     let unStrDataBool = unStrDataPercentElem.value
-      ? this.checkInput("unStrDataPercent", {number: {maxNum: 100, minNum: 0.01}})
+      ? this.checkInput("unStrDataPercent", {
+          number: { maxNum: 100, minNum: 0.01 }
+        })
       : `Doesn't exist`;
     allData.dataInProcess.standartData = allDataCheckElems[0].checked;
     allData.dataInProcess.unStandartStructData = allDataCheckElems[1].checked;
