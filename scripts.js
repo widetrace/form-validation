@@ -85,7 +85,12 @@ document.querySelector("#processSetNext").addEventListener("click", e => {
   e.preventDefault();
   if (
     check.checkInput("percentageOfBusExt", {
-      number: { maxNum: 100, minNum: 0.1, fractional: 2 }
+        type: 'number',
+        condition: {
+            maxNum: 100,
+            minNum: 0.01,
+            fractional: 2
+        }
     })
   ) {
     document.querySelectorAll(`.rule-checkBox`).forEach(e => {
