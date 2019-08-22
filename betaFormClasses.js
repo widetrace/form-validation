@@ -85,12 +85,27 @@ class ValidateInputsBeta {
           return this.showError(id, msg);
         }
 
-        if (
-          (option.condition.fractional || option.condition.fractional === 0) &&
-          `${elemValue}`.split(".").length == 2
-        ) {
+        // if (
+        //   (option.condition.fractional || option.condition.fractional === 0) &&
+        //   `${elemValue}`.split(".").length == 2
+        // ) {
+        //   if (
+        //     `${elemValue}`.split(".")[1].length > option.condition.fractional
+        //   ) {
+        //     return this.showError(
+        //       id,
+        //       `Допустимое количество знаков после запятой: ${
+        //         option.condition.fractional
+        //       }`
+        //     );
+        //   }
+        // }
+
+        if (typeof option.condition.fractional !== "undefined") {
+          const [, residue] = elemValue.toString().split(".");
           if (
-            `${elemValue}`.split(".")[1].length > option.condition.fractional
+            typeof residue !== "undefined" &&
+            residue.length > option.condition.fractional
           ) {
             return this.showError(
               id,
@@ -100,6 +115,7 @@ class ValidateInputsBeta {
             );
           }
         }
+
         return this.hideError(elem);
       }
 
