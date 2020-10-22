@@ -1,12 +1,18 @@
-class validateFullForm extends ValidateInputs {
+class validateFullForm extends ValidateInputsBeta {
   constructor() {
     super();
   }
 
   customerInfoBlock() {
-    const validName = this.checkInput("customerName", { length: 64 });
+    const validName = this.checkInput("customerName", {
+      type: "length",
+      condition: { size: 64 }
+    });
     const validMail = this.checkInput("customerEmail", { type: "email" });
-    const validUnit = this.checkInput("customerUnit", { length: 32 });
+    const validUnit = this.checkInput("customerUnit", {
+      type: "length",
+      condition: { size: 32 }
+    });
     const validPhone = this.checkInput("customerPhone", { type: "phone" });
     if (validName && validMail && validUnit && validPhone) {
       return true;
@@ -14,7 +20,10 @@ class validateFullForm extends ValidateInputs {
   }
 
   processInfoBlock() {
-    const validName = this.checkInput("processName", { length: 32 });
+    const validName = this.checkInput("processName", {
+      type: "length",
+      condition: { size: 32 }
+    });
     const validAsIs = this.checkInput("shortAsIsExample");
     const validToBe = this.checkInput("shortToBeExample");
     if (validName && validAsIs && validToBe) {
@@ -30,19 +39,25 @@ class validateFullForm extends ValidateInputs {
     difElem.value = difElem.value.trim();
     workersElem.value
       ? (validEmployee = this.checkInput(workersElem.id, {
-          number: { maxNum: 9999, minNum: 1 }
+          // number: { maxNum: 9999, minNum: 1 }
+          type: 'number',
+          condition: {
+            maxNum: 9999,
+            minNum: 1
+          }
         }))
       : "";
     difElem.value
       ? (validHard = this.checkInput(difElem.id, {
-          number: { maxNum: 9999, minNum: 1 }
+          // number: { maxNum: 9999, minNum: 1 }
+          type: 'number',
+          condition: {
+            maxNum: 9999,
+            minNum: 1
+          }
         }))
       : "";
     if (validEmployee || validHard) {
-      validHard ? (allData.countEntrProcess.howHardIsIt = difElem.value) : "";
-      validEmployee
-        ? (allData.countEntrProcess.numberOfEmployee = workersElem.value)
-        : "";
       document.querySelector("#countrEtrProcessInvalid").style.display = "none";
       return true;
     } else {
@@ -59,7 +74,13 @@ class validateFullForm extends ValidateInputs {
     const unStrDataPercentElem = document.querySelector("#unStrDataPercent");
     const unStrDataBool = unStrDataPercentElem.value
       ? this.checkInput("unStrDataPercent", {
-          number: { maxNum: 100, minNum: 0.01 }
+          // number: { maxNum: 100, minNum: 0.01 }
+          type: 'number',
+          condition: {
+            maxNum: 100,
+            minNum: 0.01,
+            fractional: 2
+          }
         })
       : `Doesn't exist`;
     allData.dataInProcess.standartData = allDataCheckElems[0].checked;
